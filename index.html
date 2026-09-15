@@ -1,0 +1,1092 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>TASTE ME — Fresh Blended Drinks, Mombasa</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#241712;
+    --ink-soft:#5b4a42;
+    --cream:#FFF6EA;
+    --card:#FFFFFF;
+    --sand:#F3E6D2;
+    --line:#E9D9BE;
+    --tongue:#E8384F;
+    --tongue-dark:#B81F35;
+    --mango:#F2A22B;
+    --leaf:#3E8F5C;
+    --melon:#FF6F8E;
+    --gold:#C98A2B;
+    --radius-lg:22px;
+    --radius-sm:12px;
+    --shadow:0 10px 24px rgba(43,24,15,.10);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--cream);
+    color:var(--ink);
+    font-family:'Manrope',sans-serif;
+    -webkit-font-smoothing:antialiased;
+    padding-bottom:84px;
+  }
+  h1,h2,h3,h4{font-family:'Baloo 2',sans-serif; margin:0 0 6px; color:var(--ink);}
+  p{margin:0 0 10px; line-height:1.5; color:var(--ink-soft);}
+  a{color:inherit;}
+  button{font-family:'Manrope',sans-serif; cursor:pointer;}
+  .app{max-width:520px; margin:0 auto; position:relative;}
+
+  /* ---------- Header ---------- */
+  header.brandbar{
+    background:linear-gradient(180deg,#FFDDBB 0%, var(--cream) 78%);
+    padding:22px 18px 26px;
+    border-bottom:3px solid var(--sand);
+    display:flex; align-items:center; gap:14px;
+  }
+  header.brandbar .logo{flex:0 0 auto;}
+  header.brandbar .word{flex:1 1 auto;}
+  header.brandbar h1{font-size:28px; letter-spacing:.5px; line-height:1;}
+  header.brandbar .tag{font-size:12.5px; color:var(--ink-soft); font-weight:600;}
+
+  /* ---------- Tabs content shell ---------- */
+  main{padding:16px 16px 30px;}
+  section.tab{display:none; animation:fade .25s ease;}
+  section.tab.active{display:block;}
+  @keyframes fade{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:none;}}
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:var(--radius-lg);
+    padding:16px;
+    margin-bottom:14px;
+    box-shadow:var(--shadow);
+  }
+  .card h3{font-size:18px;}
+  .pill-row{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:12px;}
+  .pill{
+    border:1.5px solid var(--line); background:var(--card); border-radius:999px;
+    padding:7px 14px; font-weight:700; font-size:13px; color:var(--ink-soft);
+  }
+  .pill.active{background:var(--tongue); border-color:var(--tongue); color:#fff;}
+
+  label{display:block; font-weight:700; font-size:13px; margin:12px 0 5px; color:var(--ink);}
+  input[type=text], input[type=tel], input[type=email], input[type=number], select, textarea{
+    width:100%; padding:11px 12px; border-radius:var(--radius-sm); border:1.5px solid var(--line);
+    background:#FFFDF9; font-family:'Manrope',sans-serif; font-size:14.5px; color:var(--ink);
+  }
+  textarea{min-height:74px; resize:vertical;}
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:8px;
+    background:var(--tongue); color:#fff; border:none; border-radius:999px;
+    padding:12px 20px; font-weight:800; font-size:14.5px; width:100%; margin-top:12px;
+    box-shadow:0 8px 16px rgba(232,56,79,.28);
+  }
+  .btn.secondary{background:var(--ink); box-shadow:0 8px 16px rgba(36,23,18,.22);}
+  .btn.ghost{background:transparent; color:var(--tongue); border:2px solid var(--tongue); box-shadow:none;}
+  .btn.gold{background:var(--gold); box-shadow:0 8px 16px rgba(201,138,43,.3);}
+  .btn.small{width:auto; padding:8px 14px; font-size:13px; margin-top:0;}
+
+  .drink-row{display:flex; align-items:center; gap:12px; padding:10px 0; border-bottom:1px dashed var(--line);}
+  .drink-row:last-child{border-bottom:none;}
+  .swatch{width:38px; height:38px; border-radius:50%; flex:0 0 auto;}
+  .drink-name{flex:1 1 auto; font-weight:700;}
+  .drink-price{font-size:13px; color:var(--ink-soft);}
+  .qty{display:flex; align-items:center; gap:8px;}
+  .qty button{width:28px; height:28px; border-radius:50%; border:1.5px solid var(--line); background:#fff; font-weight:800;}
+  .qty span{min-width:18px; text-align:center; font-weight:800;}
+
+  .total-line{display:flex; justify-content:space-between; padding:6px 0; font-size:14px; color:var(--ink-soft);}
+  .total-line.grand{font-size:18px; font-weight:800; color:var(--ink); border-top:2px solid var(--sand); margin-top:8px; padding-top:10px;}
+
+  .zone-list{display:grid; grid-template-columns:1fr 1fr; gap:8px; margin:10px 0;}
+  .zone-item{border:1.5px solid var(--line); border-radius:var(--radius-sm); padding:9px 10px; font-size:13px; background:#FFFDF9; cursor:pointer;}
+  .zone-item.selected{border-color:var(--tongue); background:#FFF0F1;}
+  .zone-item .zn{font-weight:800; display:block;}
+  .zone-item .zf{color:var(--ink-soft);}
+
+  .note{background:var(--sand); border-radius:var(--radius-sm); padding:10px 12px; font-size:13px; color:var(--ink-soft); margin:10px 0;}
+  .badge{display:inline-block; background:var(--leaf); color:#fff; font-size:11px; font-weight:800; padding:3px 9px; border-radius:999px;}
+  .badge.warn{background:var(--gold);}
+  .badge.off{background:#B7A695;}
+
+  .person-block{border:1.5px dashed var(--line); border-radius:var(--radius-sm); padding:10px; margin-bottom:10px;}
+  .person-block .rowtop{display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;}
+  .linkbtn{background:none; border:none; color:var(--tongue-dark); font-weight:800; font-size:13px; padding:0;}
+
+  .service-card{display:flex; gap:12px; align-items:flex-start; border-bottom:1px solid var(--line); padding:14px 0;}
+  .service-card:last-child{border-bottom:none;}
+  .service-icon{width:44px; height:44px; border-radius:14px; background:var(--sand); display:flex; align-items:center; justify-content:center; flex:0 0 auto; font-size:20px;}
+
+  .lock-screen{text-align:center; padding:26px 10px;}
+  .lock-screen .lockicon{font-size:40px;}
+
+  .review-item{border-bottom:1px solid var(--line); padding:10px 0;}
+  .stars{color:var(--gold); letter-spacing:2px;}
+
+  .product-grid{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+  .product-card{border:1.5px solid var(--line); border-radius:var(--radius-sm); padding:10px; background:#FFFDF9;}
+  .product-card .pimg{height:76px; border-radius:8px; background:linear-gradient(135deg,var(--sand),#fff); display:flex; align-items:center; justify-content:center; font-size:26px; margin-bottom:6px;}
+  .product-card .pname{font-weight:800; font-size:13.5px;}
+  .product-card .pprice{color:var(--tongue-dark); font-weight:800; font-size:13px;}
+
+  table.admin-table{width:100%; border-collapse:collapse; font-size:12.5px;}
+  table.admin-table th, table.admin-table td{border-bottom:1px solid var(--line); padding:7px 4px; text-align:left;}
+  table.admin-table th{color:var(--ink-soft); font-size:11px; text-transform:uppercase; letter-spacing:.5px;}
+
+  .sub-tabs{display:flex; gap:6px; overflow-x:auto; margin-bottom:14px; padding-bottom:4px;}
+  .sub-tab{flex:0 0 auto; border:none; background:var(--sand); border-radius:999px; padding:8px 14px; font-weight:800; font-size:12.5px; color:var(--ink-soft);}
+  .sub-tab.active{background:var(--ink); color:#fff;}
+  .sub-panel{display:none;}
+  .sub-panel.active{display:block;}
+
+  /* ---------- Bottom nav ---------- */
+  nav.bottomnav{
+    position:fixed; left:0; right:0; bottom:0; z-index:20;
+    background:#fff; border-top:1px solid var(--line);
+    display:flex; overflow-x:auto; box-shadow:0 -6px 18px rgba(43,24,15,.08);
+  }
+  nav.bottomnav .navitem{
+    flex:0 0 auto; min-width:66px; padding:9px 8px 8px; text-align:center;
+    background:none; border:none; color:var(--ink-soft); font-size:10.5px; font-weight:800;
+  }
+  nav.bottomnav .navitem .ic{display:block; font-size:19px; margin-bottom:2px;}
+  nav.bottomnav .navitem.active{color:var(--tongue-dark);}
+
+  .qr-box{display:flex; justify-content:center; margin:12px 0;}
+  .qr-box img{border-radius:12px; border:6px solid #fff; box-shadow:var(--shadow);}
+  .linkbox{display:flex; gap:8px; align-items:center; background:var(--sand); border-radius:var(--radius-sm); padding:10px 12px; font-size:12.5px; word-break:break-all;}
+
+  .version-tag{display:inline-block; background:var(--ink); color:#fff; font-size:11px; font-weight:800; padding:3px 10px; border-radius:999px; margin-bottom:8px;}
+  .changelog-item{border-left:3px solid var(--tongue); padding:4px 0 4px 12px; margin-bottom:10px;}
+  .changelog-item .d{font-size:11px; color:var(--ink-soft); font-weight:700;}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <header class="brandbar">
+    <div class="logo">
+      <svg width="66" height="80" viewBox="0 0 130 158" xmlns="http://www.w3.org/2000/svg">
+        <!-- tongue -->
+        <path d="M25 128 C25 108 45 96 65 96 C85 96 105 108 105 128 C105 148 88 156 65 156 C42 156 25 148 25 128 Z" fill="#E8384F"/>
+        <path d="M25 128 C25 108 45 96 65 96 C85 96 105 108 105 128 C105 148 88 156 65 156 C42 156 25 148 25 128 Z" fill="url(#tongueShade)"/>
+        <path d="M65 100 L65 150" stroke="#B81F35" stroke-width="4" stroke-linecap="round"/>
+        <ellipse cx="65" cy="128" rx="40" ry="26" fill="none"/>
+        <!-- falling drops, angled 30deg -->
+        <g transform="rotate(30 40 68)">
+          <path d="M40 55 C46 63 46 71 40 74 C34 71 34 63 40 55 Z" fill="#F2A22B"/>
+        </g>
+        <g transform="rotate(30 52 82)">
+          <path d="M52 66 C60 76 60 87 52 91 C44 87 44 76 52 66 Z" fill="#3E8F5C"/>
+        </g>
+        <!-- cup -->
+        <path d="M30 8 H88 L82 62 C81 70 74 76 66 76 H52 C44 76 37 70 36 62 L30 8 Z" fill="#FFFDF7" stroke="#C98A2B" stroke-width="3"/>
+        <path d="M34 24 L84 24" stroke="#E9D9BE" stroke-width="2"/>
+        <path d="M36.5 30 L81.5 30 L76 60 C75 66 70 70 64 70 H54 C48 70 43 66 42 60 L36.5 30 Z" fill="#FFC65C" opacity="0.85"/>
+        <!-- dome lid -->
+        <rect x="24" y="0" width="70" height="12" rx="6" fill="#C98A2B"/>
+        <path d="M30 0 C30 -10 88 -10 88 0" fill="none" stroke="#C98A2B" stroke-width="6" stroke-linecap="round" transform="translate(0,10)"/>
+        <line x1="59" y1="-4" x2="65" y2="14" stroke="#B81F35" stroke-width="5" stroke-linecap="round" transform="translate(0,10)"/>
+        <defs>
+          <linearGradient id="tongueShade" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#ffffff" stop-opacity="0.15"/>
+            <stop offset="1" stop-color="#000000" stop-opacity="0.08"/>
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+    <div class="word">
+      <h1>TASTE ME</h1>
+      <div class="tag">Fresh blended drinks, delivered around Mombasa</div>
+      <div class="tag" style="margin-top:2px;">✉️ nestormshindani65@gmail.com</div>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ============ ORDER ============ -->
+    <section class="tab active" id="tab-order">
+      <div class="card">
+        <h3>Pick your drinks</h3>
+        <p>Flat KES 100 per cup. Choose one delivery zone, or arrange your own transport.</p>
+        <div id="drinkList"></div>
+      </div>
+
+      <div class="card">
+        <h3>Delivery</h3>
+        <div class="pill-row">
+          <button class="pill active" id="riderModeBtn" onclick="setDeliveryMode('rider')">Rider delivery</button>
+          <button class="pill" id="ownModeBtn" onclick="setDeliveryMode('own')">I'll arrange my own transport</button>
+        </div>
+        <div id="zonePickerWrap">
+          <div class="zone-list" id="zonePicker"></div>
+          <details>
+            <summary style="font-weight:700; font-size:13px; color:var(--ink-soft); cursor:pointer;">My area isn't on the list</summary>
+            <label>Your area name</label>
+            <input type="text" id="customZoneName" placeholder="e.g. Utange">
+            <button class="btn ghost small" style="margin-top:8px;" onclick="submitCustomZone()">Send area request</button>
+            <p style="font-size:12px; margin-top:6px;">We'll confirm a delivery fee with you on WhatsApp before your order is dispatched.</p>
+          </details>
+        </div>
+        <p class="note" id="ownNote" style="display:none;">No delivery fee — arrange a boda or matatu to collect from us. We'll send the pickup point on WhatsApp.</p>
+      </div>
+
+      <div class="card">
+        <label>Your name</label>
+        <input type="text" id="orderName" placeholder="Full name">
+        <label>Phone number</label>
+        <input type="tel" id="orderPhone" placeholder="07xx xxx xxx">
+        <div class="total-line"><span>Drinks</span><span id="sumDrinks">KES 0</span></div>
+        <div class="total-line"><span>Delivery</span><span id="sumDelivery">KES 0</span></div>
+        <div class="total-line grand"><span>Total</span><span id="sumTotal">KES 0</span></div>
+        <button class="btn" onclick="placeOrder()">Send order on WhatsApp</button>
+        <button class="btn ghost" onclick="emailOrder()">Email my order instead</button>
+      </div>
+    </section>
+
+    <!-- ============ GROUP ORDER ============ -->
+    <section class="tab" id="tab-group">
+      <div class="card">
+        <h3>Group order</h3>
+        <p>Order together with people in the same area and split one delivery fee. Delivery for a group is the zone fee <strong>+ KES 80</strong>. Example: Miritini KES 50 + KES 80 = <strong>KES 130</strong> for the whole group.</p>
+        <label>Delivery zone for the group</label>
+        <div class="zone-list" id="groupZonePicker"></div>
+      </div>
+
+      <div class="card">
+        <h3>People in this group</h3>
+        <div id="groupPeople"></div>
+        <button class="btn ghost small" onclick="addGroupPerson()">+ Add a person</button>
+      </div>
+
+      <div class="card">
+        <label>Group contact name</label>
+        <input type="text" id="groupContactName" placeholder="Who should we confirm with?">
+        <label>Contact phone</label>
+        <input type="tel" id="groupContactPhone" placeholder="07xx xxx xxx">
+        <div class="total-line"><span>Drinks (all people)</span><span id="gSumDrinks">KES 0</span></div>
+        <div class="total-line"><span>Group delivery (zone + KES 80)</span><span id="gSumDelivery">KES 0</span></div>
+        <div class="total-line grand"><span>Total</span><span id="gSumTotal">KES 0</span></div>
+        <button class="btn" onclick="placeGroupOrder()">Send group order on WhatsApp</button>
+        <button class="btn ghost" onclick="emailGroupOrder()">Email this group order instead</button>
+      </div>
+    </section>
+
+    <!-- ============ SDS ============ -->
+    <section class="tab" id="tab-sds">
+      <div class="card">
+        <h3>Surprise Paradise <span class="badge warn">SDS</span></h3>
+        <p>A small members' corner for extra services. KES 50 unlocks access for 4 months.</p>
+        <div id="sdsGate"></div>
+      </div>
+    </section>
+
+    <!-- ============ TRACK ============ -->
+    <section class="tab" id="tab-track">
+      <div class="card">
+        <h3>Track your order</h3>
+        <label>Phone number used for the order</label>
+        <input type="tel" id="trackPhone" placeholder="07xx xxx xxx">
+        <button class="btn secondary" onclick="trackOrder()">Check status</button>
+        <div id="trackResult"></div>
+      </div>
+    </section>
+
+    <!-- ============ REVIEWS ============ -->
+    <section class="tab" id="tab-reviews">
+      <div class="card">
+        <h3>Leave a review</h3>
+        <label>Your name</label>
+        <input type="text" id="revName" placeholder="Name">
+        <label>Rating</label>
+        <div class="pill-row" id="starPicker">
+          <button class="pill" data-v="1">★</button>
+          <button class="pill" data-v="2">★★</button>
+          <button class="pill" data-v="3">★★★</button>
+          <button class="pill" data-v="4">★★★★</button>
+          <button class="pill active" data-v="5">★★★★★</button>
+        </div>
+        <label>Comment</label>
+        <textarea id="revText" placeholder="How was your drink?"></textarea>
+        <button class="btn secondary" onclick="submitReview()">Post review</button>
+      </div>
+      <div class="card">
+        <h3>What people say</h3>
+        <div id="reviewList"></div>
+      </div>
+    </section>
+
+    <!-- ============ SHARE ============ -->
+    <section class="tab" id="tab-share">
+      <div class="card" style="text-align:center;">
+        <h3>Share Taste Me</h3>
+        <p>Scan or send this link so friends can order too.</p>
+        <p style="font-size:13px;">Questions? Email <strong>nestormshindani65@gmail.com</strong></p>
+        <div class="qr-box"><img id="qrImg" width="180" height="180" alt="QR code to order Taste Me"></div>
+        <div class="linkbox"><span id="shareLink"></span></div>
+        <button class="btn small ghost" style="width:100%; margin-top:10px;" onclick="copyShareLink()">Copy link</button>
+      </div>
+    </section>
+
+    <!-- ============ OWNER ============ -->
+    <section class="tab" id="tab-owner">
+      <div id="ownerGate"></div>
+    </section>
+
+    <!-- ============ RIDER ============ -->
+    <section class="tab" id="tab-rider">
+      <div id="riderGate"></div>
+    </section>
+
+  </main>
+
+  <nav class="bottomnav">
+    <button class="navitem active" data-tab="order" onclick="showTab('order')"><span class="ic">🥤</span>Order</button>
+    <button class="navitem" data-tab="group" onclick="showTab('group')"><span class="ic">👥</span>Group</button>
+    <button class="navitem" data-tab="sds" onclick="showTab('sds')"><span class="ic">🎁</span>SDS</button>
+    <button class="navitem" data-tab="track" onclick="showTab('track')"><span class="ic">📍</span>Track</button>
+    <button class="navitem" data-tab="reviews" onclick="showTab('reviews')"><span class="ic">⭐</span>Reviews</button>
+    <button class="navitem" data-tab="share" onclick="showTab('share')"><span class="ic">🔗</span>Share</button>
+    <button class="navitem" data-tab="owner" onclick="showTab('owner')"><span class="ic">🔐</span>Owner</button>
+    <button class="navitem" data-tab="rider" onclick="showTab('rider')"><span class="ic">🛵</span>Rider</button>
+  </nav>
+</div>
+
+<script>
+/* =========================================================================
+   TASTE ME — single-file app
+   Version 3.0 — 15 Sep 2026
+
+   OPTIONAL MULTI-DEVICE SYNC
+   By default everything is saved on this one phone/browser only
+   (localStorage). That's fine for testing, but it means an order placed
+   on a customer's phone will NOT appear on the owner's phone unless you
+   set up a free Firebase project and paste its config below. See the
+   "Update & setup" tab inside the app (Owner login) for the full guide.
+========================================================================= */
+const FIREBASE_CONFIG = null; // paste your Firebase config object here, e.g. {apiKey:"...", projectId:"...", ...}
+
+const OWNER_WHATSAPP = ["254784870942","254729247704"]; // 0784870942 / 0729247704
+const OWNER_PHONE_DISPLAY = "0784870942 / 0729247704";
+const OWNER_EMAIL_CONTACT = "nestormshindani65@gmail.com";
+const APP_VERSION = "3.0";
+const CHANGELOG = [
+  {v:"3.0", d:"15 Sep 2026", notes:"New logo (cup + drops + tongue), transportation zones with fees, group ordering, Surprise Paradise (SDS) subscription section, three-person owner login with PIN + email, courier login, editable zones, Update tab."},
+  {v:"2.1", d:"15 Sep 2026", notes:"Added Track tab, Owner dispatch/zones/riders, Rider tab with live-location sharing."},
+  {v:"2.0", d:"11 Sep 2026", notes:"Rebranded to TASTE ME. Order, Reviews, Share, PIN-gated Owner dashboard."}
+];
+
+const DEFAULT_DRINKS = [
+  {id:"mango", name:"Mango Punch", price:100, color:"var(--mango)"},
+  {id:"green", name:"Tropical Green", price:100, color:"var(--leaf)"},
+  {id:"melon", name:"Watermelon Cooler", price:100, color:"var(--melon)"}
+];
+
+const DEFAULT_ZONES = [
+  {name:"Miritini", fee:50},
+  {name:"Jomvu", fee:50},
+  {name:"Magongo", fee:70},
+  {name:"Migadini", fee:80},
+  {name:"Round Changamwe", fee:60},
+  {name:"Tudor", fee:80},
+  {name:"Mwembe", fee:100},
+  {name:"Likoni", fee:120},
+  {name:"Nyali", fee:150},
+  {name:"Mtwapa", fee:200},
+  {name:"Bamburi", fee:140},
+  {name:"Docks", fee:100}
+];
+const GROUP_FEE_ADDON = 80;
+const SDS_PRICE = 50;
+const SDS_MONTHS = 4;
+
+const DEFAULT_OWNER_ACCOUNTS = [
+  {name:"Owner 1", pin:"4657", email:"nestormshindani65@gmail.com"},
+  {name:"Owner 2", pin:"", email:""},
+  {name:"Owner 3", pin:"", email:""}
+];
+
+/* ---------------- storage layer (localStorage + optional Firebase mirror) --------------- */
+let fbDb = null;
+function initFirebase(){
+  if(!FIREBASE_CONFIG) return;
+  const s1=document.createElement("script"); s1.src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js";
+  const s2=document.createElement("script"); s2.src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js";
+  document.head.appendChild(s1);
+  s1.onload=()=>{ document.head.appendChild(s2);
+    s2.onload=()=>{ firebase.initializeApp(FIREBASE_CONFIG); fbDb=firebase.firestore();
+      Object.keys(STORE_KEYS).forEach(k=>attachSync(k)); };
+  };
+}
+const STORE_KEYS = {
+  zones:"tm_zones", drinks:"tm_drinks", orders:"tm_orders", reviews:"tm_reviews",
+  products:"tm_products", sdsRequests:"tm_sdsRequests", ownerAccounts:"tm_ownerAccounts",
+  riderAccounts:"tm_riderAccounts", customZones:"tm_customZoneRequests"
+};
+function attachSync(key){
+  const col = STORE_KEYS[key];
+  fbDb.collection("tasteme").doc(col).onSnapshot(doc=>{
+    if(doc.exists){ localStorage.setItem(col, JSON.stringify(doc.data().items||[])); renderAll(); }
+  });
+}
+function dbGet(key, fallback){
+  const raw = localStorage.getItem(STORE_KEYS[key]);
+  if(raw===null){ localStorage.setItem(STORE_KEYS[key], JSON.stringify(fallback)); return JSON.parse(JSON.stringify(fallback)); }
+  try{ return JSON.parse(raw); }catch(e){ return fallback; }
+}
+function dbSet(key, value){
+  localStorage.setItem(STORE_KEYS[key], JSON.stringify(value));
+  if(fbDb){ fbDb.collection("tasteme").doc(STORE_KEYS[key]).set({items:value}); }
+}
+
+/* ---------------- helpers ---------------- */
+function waLink(phoneList, msg){
+  const phone = Array.isArray(phoneList)?phoneList[0]:phoneList;
+  return "https://wa.me/"+phone+"?text="+encodeURIComponent(msg);
+}
+function kes(n){ return "KES "+Number(n).toLocaleString(); }
+function todayISO(){ return new Date().toISOString().slice(0,10); }
+function addMonths(iso, months){ const d=new Date(iso); d.setMonth(d.getMonth()+months); return d.toISOString().slice(0,10); }
+function uid(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,7); }
+
+/* ---------------- tab switching ---------------- */
+function showTab(name){
+  document.querySelectorAll("section.tab").forEach(s=>s.classList.remove("active"));
+  document.getElementById("tab-"+name).classList.add("active");
+  document.querySelectorAll(".navitem").forEach(b=>b.classList.toggle("active", b.dataset.tab===name));
+  window.scrollTo({top:0,behavior:"smooth"});
+  renderAll();
+}
+
+/* =========================================================================
+   ORDER TAB
+========================================================================= */
+let orderQty = {};
+let deliveryMode = "rider";
+let selectedZone = null;
+
+function renderDrinkList(){
+  const drinks = dbGet("drinks", DEFAULT_DRINKS);
+  const wrap = document.getElementById("drinkList");
+  wrap.innerHTML = drinks.map(d=>{
+    if(!(d.id in orderQty)) orderQty[d.id]=0;
+    return `<div class="drink-row">
+      <div class="swatch" style="background:${d.color}"></div>
+      <div class="drink-name">${d.name}<div class="drink-price">${kes(d.price)}</div></div>
+      <div class="qty">
+        <button onclick="changeQty('${d.id}',-1)">−</button>
+        <span id="qty-${d.id}">${orderQty[d.id]}</span>
+        <button onclick="changeQty('${d.id}',1)">+</button>
+      </div>
+    </div>`;
+  }).join("");
+}
+function changeQty(id, delta){
+  orderQty[id] = Math.max(0,(orderQty[id]||0)+delta);
+  document.getElementById("qty-"+id).textContent = orderQty[id];
+  recalcOrder();
+}
+function setDeliveryMode(mode){
+  deliveryMode = mode;
+  document.getElementById("riderModeBtn").classList.toggle("active", mode==="rider");
+  document.getElementById("ownModeBtn").classList.toggle("active", mode==="own");
+  document.getElementById("zonePickerWrap").style.display = mode==="rider" ? "block":"none";
+  document.getElementById("ownNote").style.display = mode==="own" ? "block":"none";
+  recalcOrder();
+}
+function renderZonePicker(){
+  const zones = dbGet("zones", DEFAULT_ZONES);
+  const wrap = document.getElementById("zonePicker");
+  wrap.innerHTML = zones.map((z,i)=>`<div class="zone-item ${selectedZone===i?'selected':''}" onclick="pickZone(${i})">
+    <span class="zn">${z.name}</span><span class="zf">${kes(z.fee)}</span></div>`).join("");
+}
+function pickZone(i){ selectedZone=i; renderZonePicker(); recalcOrder(); }
+function recalcOrder(){
+  const drinks = dbGet("drinks", DEFAULT_DRINKS);
+  let drinkTotal=0;
+  drinks.forEach(d=>{ drinkTotal += (orderQty[d.id]||0)*d.price; });
+  const zones = dbGet("zones", DEFAULT_ZONES);
+  let deliveryFee = 0;
+  if(deliveryMode==="rider" && selectedZone!==null && zones[selectedZone]) deliveryFee = zones[selectedZone].fee;
+  document.getElementById("sumDrinks").textContent = kes(drinkTotal);
+  document.getElementById("sumDelivery").textContent = kes(deliveryFee);
+  document.getElementById("sumTotal").textContent = kes(drinkTotal+deliveryFee);
+}
+function submitCustomZone(){
+  const name = document.getElementById("customZoneName").value.trim();
+  if(!name){ alert("Type your area name first."); return; }
+  const list = dbGet("customZones", []);
+  list.push({id:uid(), name, requestedOn:todayISO(), status:"pending"});
+  dbSet("customZones", list);
+  document.getElementById("customZoneName").value="";
+  alert("Sent! We'll confirm a delivery fee for "+name+" on WhatsApp.");
+}
+function placeOrder(){
+  const drinks = dbGet("drinks", DEFAULT_DRINKS);
+  const items = drinks.filter(d=>orderQty[d.id]>0).map(d=>`${orderQty[d.id]}x ${d.name}`);
+  if(items.length===0){ alert("Add at least one drink."); return; }
+  const name = document.getElementById("orderName").value.trim();
+  const phone = document.getElementById("orderPhone").value.trim();
+  if(!name || !phone){ alert("Please add your name and phone number."); return; }
+  const zones = dbGet("zones", DEFAULT_ZONES);
+  const zone = deliveryMode==="rider" && selectedZone!==null ? zones[selectedZone] : null;
+  const deliveryFee = zone ? zone.fee : 0;
+  const drinkTotal = drinks.reduce((s,d)=>s+(orderQty[d.id]||0)*d.price,0);
+  const total = drinkTotal+deliveryFee;
+  const order = {id:uid(), type:"single", name, phone, items, zone: zone?zone.name:(deliveryMode==="own"?"Own transport":"Not set"),
+    deliveryFee, total, status:"new", placedOn:new Date().toISOString()};
+  const orders = dbGet("orders", []); orders.push(order); dbSet("orders", orders);
+  const msg = `TASTE ME order\nName: ${name}\nPhone: ${phone}\nItems: ${items.join(", ")}\nDelivery: ${order.zone} (${kes(deliveryFee)})\nTotal: ${kes(total)}\n\nM-Pesa to ${OWNER_PHONE_DISPLAY} on confirmation.`;
+  window.open(waLink(OWNER_WHATSAPP, msg), "_blank");
+  orderQty={}; renderDrinkList(); recalcOrder();
+}
+
+function emailOrder(){
+  const drinks = dbGet("drinks", DEFAULT_DRINKS);
+  const items = drinks.filter(d=>orderQty[d.id]>0).map(d=>`${orderQty[d.id]}x ${d.name}`);
+  if(items.length===0){ alert("Add at least one drink."); return; }
+  const name = document.getElementById("orderName").value.trim();
+  const phone = document.getElementById("orderPhone").value.trim();
+  if(!name || !phone){ alert("Please add your name and phone number."); return; }
+  const zones = dbGet("zones", DEFAULT_ZONES);
+  const zone = deliveryMode==="rider" && selectedZone!==null ? zones[selectedZone] : null;
+  const deliveryFee = zone ? zone.fee : 0;
+  const drinkTotal = drinks.reduce((s,d)=>s+(orderQty[d.id]||0)*d.price,0);
+  const total = drinkTotal+deliveryFee;
+  const zoneName = zone?zone.name:(deliveryMode==="own"?"Own transport":"Not set");
+  const order = {id:uid(), type:"single", name, phone, items, zone: zoneName,
+    deliveryFee, total, status:"new", placedOn:new Date().toISOString()};
+  const orders = dbGet("orders", []); orders.push(order); dbSet("orders", orders);
+  const subject = `TASTE ME order — ${name}`;
+  const body = `Name: ${name}\nPhone: ${phone}\nItems: ${items.join(", ")}\nDelivery: ${zoneName} (${kes(deliveryFee)})\nTotal: ${kes(total)}\n\nM-Pesa to ${OWNER_PHONE_DISPLAY} on confirmation.`;
+  window.location.href = `mailto:${OWNER_EMAIL_CONTACT}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  orderQty={}; renderDrinkList(); recalcOrder();
+}
+let groupZoneIdx = null;
+let groupPeople = [];
+function renderGroupZonePicker(){
+  const zones = dbGet("zones", DEFAULT_ZONES);
+  document.getElementById("groupZonePicker").innerHTML = zones.map((z,i)=>{
+    const groupFee = z.fee+GROUP_FEE_ADDON;
+    return `<div class="zone-item ${groupZoneIdx===i?'selected':''}" onclick="pickGroupZone(${i})">
+      <span class="zn">${z.name}</span><span class="zf">${kes(z.fee)} + ${kes(GROUP_FEE_ADDON)} = ${kes(groupFee)}</span></div>`;
+  }).join("");
+}
+function pickGroupZone(i){ groupZoneIdx=i; renderGroupZonePicker(); recalcGroup(); }
+function addGroupPerson(){
+  groupPeople.push({id:uid(), name:"", qty:{}});
+  renderGroupPeople();
+}
+function renderGroupPeople(){
+  const drinks = dbGet("drinks", DEFAULT_DRINKS);
+  const wrap = document.getElementById("groupPeople");
+  if(groupPeople.length===0){ wrap.innerHTML = '<p>No one added yet — tap "+ Add a person" below.</p>'; return; }
+  wrap.innerHTML = groupPeople.map((p,idx)=>`
+    <div class="person-block">
+      <div class="rowtop">
+        <input type="text" placeholder="Person ${idx+1} name" value="${p.name}" oninput="updatePersonName('${p.id}', this.value)">
+        <button class="linkbtn" onclick="removePerson('${p.id}')">Remove</button>
+      </div>
+      ${drinks.map(d=>`<div class="drink-row" style="padding:6px 0;">
+        <div class="swatch" style="width:24px;height:24px;background:${d.color}"></div>
+        <div class="drink-name" style="font-size:13px;">${d.name}</div>
+        <div class="qty">
+          <button onclick="changePersonQty('${p.id}','${d.id}',-1)">−</button>
+          <span id="pq-${p.id}-${d.id}">${p.qty[d.id]||0}</span>
+          <button onclick="changePersonQty('${p.id}','${d.id}',1)">+</button>
+        </div>
+      </div>`).join("")}
+    </div>`).join("");
+}
+function updatePersonName(id, val){ const p=groupPeople.find(p=>p.id===id); if(p) p.name=val; }
+function changePersonQty(id, drinkId, delta){
+  const p=groupPeople.find(p=>p.id===id); if(!p) return;
+  p.qty[drinkId] = Math.max(0,(p.qty[drinkId]||0)+delta);
+  document.getElementById(`pq-${id}-${drinkId}`).textContent = p.qty[drinkId];
+  recalcGroup();
+}
+function removePerson(id){ groupPeople = groupPeople.filter(p=>p.id!==id); renderGroupPeople(); recalcGroup(); }
+function recalcGroup(){
+  const drinks = dbGet("drinks", DEFAULT_DRINKS);
+  let drinkTotal=0;
+  groupPeople.forEach(p=>{ drinks.forEach(d=>{ drinkTotal += (p.qty[d.id]||0)*d.price; }); });
+  const zones = dbGet("zones", DEFAULT_ZONES);
+  const groupFee = groupZoneIdx!==null ? zones[groupZoneIdx].fee+GROUP_FEE_ADDON : 0;
+  document.getElementById("gSumDrinks").textContent = kes(drinkTotal);
+  document.getElementById("gSumDelivery").textContent = kes(groupFee);
+  document.getElementById("gSumTotal").textContent = kes(drinkTotal+groupFee);
+}
+function placeGroupOrder(){
+  if(groupZoneIdx===null){ alert("Pick a delivery zone for the group."); return; }
+  if(groupPeople.length===0){ alert("Add at least one person to the group."); return; }
+  const drinks = dbGet("drinks", DEFAULT_DRINKS);
+  const zones = dbGet("zones", DEFAULT_ZONES);
+  const zone = zones[groupZoneIdx];
+  const groupFee = zone.fee+GROUP_FEE_ADDON;
+  const contactName = document.getElementById("groupContactName").value.trim();
+  const contactPhone = document.getElementById("groupContactPhone").value.trim();
+  if(!contactName || !contactPhone){ alert("Add a group contact name and phone."); return; }
+  let drinkTotal=0;
+  const lines = groupPeople.map((p,idx)=>{
+    const items = drinks.filter(d=>p.qty[d.id]>0).map(d=>`${p.qty[d.id]}x ${d.name}`);
+    const personTotal = drinks.reduce((s,d)=>s+(p.qty[d.id]||0)*d.price,0);
+    drinkTotal += personTotal;
+    return `${p.name || "Person "+(idx+1)}: ${items.join(", ")||"—"} (${kes(personTotal)})`;
+  });
+  const total = drinkTotal+groupFee;
+  const order = {id:uid(), type:"group", contactName, contactPhone, zone:zone.name,
+    people:groupPeople.map((p,idx)=>({name:p.name||"Person "+(idx+1), qty:p.qty})),
+    deliveryFee:groupFee, total, status:"new", placedOn:new Date().toISOString()};
+  const orders = dbGet("orders", []); orders.push(order); dbSet("orders", orders);
+  const msg = `TASTE ME group order\nContact: ${contactName} (${contactPhone})\nZone: ${zone.name}\n\n${lines.join("\n")}\n\nGroup delivery: ${kes(zone.fee)} + ${kes(GROUP_FEE_ADDON)} = ${kes(groupFee)}\nTotal: ${kes(total)}`;
+  window.open(waLink(OWNER_WHATSAPP, msg), "_blank");
+  groupPeople=[]; groupZoneIdx=null; renderGroupPeople(); renderGroupZonePicker(); recalcGroup();
+}
+
+function emailGroupOrder(){
+  if(groupZoneIdx===null){ alert("Pick a delivery zone for the group."); return; }
+  if(groupPeople.length===0){ alert("Add at least one person to the group."); return; }
+  const drinks = dbGet("drinks", DEFAULT_DRINKS);
+  const zones = dbGet("zones", DEFAULT_ZONES);
+  const zone = zones[groupZoneIdx];
+  const groupFee = zone.fee+GROUP_FEE_ADDON;
+  const contactName = document.getElementById("groupContactName").value.trim();
+  const contactPhone = document.getElementById("groupContactPhone").value.trim();
+  if(!contactName || !contactPhone){ alert("Add a group contact name and phone."); return; }
+  let drinkTotal=0;
+  const lines = groupPeople.map((p,idx)=>{
+    const items = drinks.filter(d=>p.qty[d.id]>0).map(d=>`${p.qty[d.id]}x ${d.name}`);
+    const personTotal = drinks.reduce((s,d)=>s+(p.qty[d.id]||0)*d.price,0);
+    drinkTotal += personTotal;
+    return `${p.name || "Person "+(idx+1)}: ${items.join(", ")||"—"} (${kes(personTotal)})`;
+  });
+  const total = drinkTotal+groupFee;
+  const order = {id:uid(), type:"group", contactName, contactPhone, zone:zone.name,
+    people:groupPeople.map((p,idx)=>({name:p.name||"Person "+(idx+1), qty:p.qty})),
+    deliveryFee:groupFee, total, status:"new", placedOn:new Date().toISOString()};
+  const orders = dbGet("orders", []); orders.push(order); dbSet("orders", orders);
+  const subject = `TASTE ME group order — ${contactName}`;
+  const body = `Contact: ${contactName} (${contactPhone})\nZone: ${zone.name}\n\n${lines.join("\n")}\n\nGroup delivery: ${kes(zone.fee)} + ${kes(GROUP_FEE_ADDON)} = ${kes(groupFee)}\nTotal: ${kes(total)}`;
+  window.location.href = `mailto:${OWNER_EMAIL_CONTACT}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  groupPeople=[]; groupZoneIdx=null; renderGroupPeople(); renderGroupZonePicker(); recalcGroup();
+}
+
+/* =========================================================================
+   TRACK TAB
+========================================================================= */
+function trackOrder(){
+  const phone = document.getElementById("trackPhone").value.trim();
+  const orders = dbGet("orders", []);
+  const mine = orders.filter(o=> (o.phone===phone) || (o.contactPhone===phone) ).slice(-5).reverse();
+  const wrap = document.getElementById("trackResult");
+  if(mine.length===0){ wrap.innerHTML = '<p class="note">No orders found for that number yet.</p>'; return; }
+  wrap.innerHTML = mine.map(o=>`<div class="card">
+    <div><span class="badge ${o.status==='delivered'?'':(o.status==='dispatched'?'warn':'off')}">${o.status}</span></div>
+    <p style="margin-top:8px;">${o.type==="group"?"Group order":"Order"} · ${o.zone||"—"} · ${kes(o.total)}<br>
+    Placed ${new Date(o.placedOn).toLocaleString()}</p>
+  </div>`).join("");
+}
+
+/* =========================================================================
+   REVIEWS TAB
+========================================================================= */
+let selectedStars = 5;
+document.getElementById("starPicker").addEventListener("click", e=>{
+  const btn = e.target.closest("button"); if(!btn) return;
+  selectedStars = Number(btn.dataset.v);
+  document.querySelectorAll("#starPicker .pill").forEach(p=>p.classList.toggle("active", p===btn));
+});
+function submitReview(){
+  const name = document.getElementById("revName").value.trim();
+  const text = document.getElementById("revText").value.trim();
+  if(!name || !text){ alert("Add your name and a short comment."); return; }
+  const reviews = dbGet("reviews", []);
+  reviews.push({id:uid(), name, text, stars:selectedStars, on:new Date().toISOString()});
+  dbSet("reviews", reviews);
+  document.getElementById("revName").value=""; document.getElementById("revText").value="";
+  renderReviews();
+}
+function renderReviews(){
+  const reviews = dbGet("reviews", []).slice().reverse();
+  document.getElementById("reviewList").innerHTML = reviews.length ? reviews.map(r=>`
+    <div class="review-item"><div class="stars">${"★".repeat(r.stars)}${"☆".repeat(5-r.stars)}</div>
+    <strong>${r.name}</strong><p>${r.text}</p></div>`).join("") : '<p>No reviews yet — be the first!</p>';
+}
+
+/* =========================================================================
+   SHARE TAB
+========================================================================= */
+function renderShare(){
+  const link = window.location.href.split("#")[0];
+  document.getElementById("shareLink").textContent = link;
+  document.getElementById("qrImg").src = "https://api.qrserver.com/v1/create-qr-code/?size=180x180&data="+encodeURIComponent(link);
+}
+function copyShareLink(){
+  navigator.clipboard.writeText(document.getElementById("shareLink").textContent).then(()=>alert("Link copied!"));
+}
+
+/* =========================================================================
+   SDS — SURPRISE PARADISE
+========================================================================= */
+let sdsPhone = "";
+function renderSdsGate(){
+  const gate = document.getElementById("sdsGate");
+  gate.innerHTML = `
+    <label>Your phone number</label>
+    <input type="tel" id="sdsPhoneInput" placeholder="07xx xxx xxx" value="${sdsPhone}">
+    <button class="btn gold" onclick="checkSdsAccess()">Check my access</button>
+    <div id="sdsStatusArea" style="margin-top:14px;"></div>
+  `;
+}
+function findSdsSub(phone){
+  return dbGet("sdsRequests", []).slice().reverse().find(r=>r.type==="subscription" && r.phone===phone);
+}
+function checkSdsAccess(){
+  sdsPhone = document.getElementById("sdsPhoneInput").value.trim();
+  if(!sdsPhone){ alert("Enter your phone number."); return; }
+  const sub = findSdsSub(sdsPhone);
+  const area = document.getElementById("sdsStatusArea");
+  const active = sub && sub.status==="active" && sub.expiresOn >= todayISO();
+  if(active){
+    area.innerHTML = `<p class="note">Active until <strong>${sub.expiresOn}</strong>.</p>`;
+    renderSdsServices(area, true);
+  } else if(sub && sub.status==="pending"){
+    area.innerHTML = `<p class="note">Your KES 50 activation request is pending owner confirmation.</p>`;
+  } else {
+    area.innerHTML = `
+      <div class="note">Not subscribed yet. Send <strong>KES 50</strong> via M-Pesa Send Money to
+      <strong>${OWNER_PHONE_DISPLAY}</strong>, then tap the button below — it unlocks for ${SDS_MONTHS} months
+      once the owner confirms payment.</div>
+      <button class="btn gold" onclick="requestSdsActivation()">I've paid — request activation</button>`;
+    renderSdsServices(area, false);
+  }
+}
+function requestSdsActivation(){
+  const requests = dbGet("sdsRequests", []);
+  requests.push({id:uid(), type:"subscription", phone:sdsPhone, status:"pending", requestedOn:todayISO()});
+  dbSet("sdsRequests", requests);
+  const msg = `SDS activation request\nPhone: ${sdsPhone}\nAmount: KES 50 (${SDS_MONTHS} months)\nPlease confirm once received.`;
+  window.open(waLink(OWNER_WHATSAPP, msg), "_blank");
+  checkSdsAccess();
+}
+function renderSdsServices(area, unlocked){
+  const html = `
+  <div class="card" style="margin-top:14px;">
+    <div class="service-card">
+      <div class="service-icon">🔪</div>
+      <div>
+        <h4>Knife & tool sharpening</h4>
+        <p>Small KES 30–60 · Medium KES 60–100 · Large KES 100–150, depending on size and what you need.</p>
+        ${unlocked ? `<button class="btn small ghost" onclick="showSharpenForm()">Request sharpening</button>` : `<span class="badge off">Unlock to request</span>`}
+        <div id="sharpenFormArea"></div>
+      </div>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">👕</div>
+      <div>
+        <h4>Chané Corner — Taste Me merch</h4>
+        <p>Branded T-shirts, shirts, caps, panties, boxers, trousers, shorts, sleepwear, cups, bottles, plates & tote bags.</p>
+        ${unlocked ? `<button class="btn small ghost" onclick="showMerchStore()">Browse merch</button>` : `<span class="badge off">Unlock to browse</span>`}
+        <div id="merchStoreArea"></div>
+      </div>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">🥘</div>
+      <div>
+        <h4>Prepped ingredients for your recipe</h4>
+        <p>Tell us the dish and how many servings — we prep the ingredients to your recipe. Final cost + delivery confirmed on WhatsApp.</p>
+        ${unlocked ? `<button class="btn small ghost" onclick="showIngredientForm()">Order ingredients</button>` : `<span class="badge off">Unlock to order</span>`}
+        <div id="ingredientFormArea"></div>
+      </div>
+    </div>
+  </div>`;
+  area.insertAdjacentHTML("beforeend", html);
+}
+function showSharpenForm(){
+  document.getElementById("sharpenFormArea").innerHTML = `
+    <label>Item(s)</label><input type="text" id="shItem" placeholder="e.g. 2 kitchen knives">
+    <label>Size</label><select id="shSize"><option value="small">Small (KES 30–60)</option><option value="medium">Medium (KES 60–100)</option><option value="large">Large (KES 100–150)</option></select>
+    <label>Notes</label><textarea id="shNotes" placeholder="Anything specific?"></textarea>
+    <button class="btn small gold" style="width:100%;" onclick="submitSharpen()">Send request</button>`;
+}
+function submitSharpen(){
+  const item = document.getElementById("shItem").value.trim();
+  const size = document.getElementById("shSize").value;
+  const notes = document.getElementById("shNotes").value.trim();
+  if(!item){ alert("List the item(s)."); return; }
+  const requests = dbGet("sdsRequests", []);
+  requests.push({id:uid(), type:"sharpen", phone:sdsPhone, item, size, notes, status:"new", requestedOn:new Date().toISOString()});
+  dbSet("sdsRequests", requests);
+  window.open(waLink(OWNER_WHATSAPP, `Sharpening request\nPhone: ${sdsPhone}\nItem: ${item}\nSize: ${size}\nNotes: ${notes}`), "_blank");
+  alert("Sent! We'll quote the exact price on WhatsApp.");
+}
+function showMerchStore(){
+  const products = dbGet("products", []);
+  const area = document.getElementById("merchStoreArea");
+  if(products.length===0){ area.innerHTML = '<p class="note">No items posted yet — check back soon.</p>'; return; }
+  area.innerHTML = `<div class="product-grid" style="margin-top:8px;">${products.map(p=>`
+    <div class="product-card">
+      <div class="pimg">👕</div>
+      <div class="pname">${p.name}</div>
+      <div style="font-size:11px;color:var(--ink-soft);">${p.category}</div>
+      <div class="pprice">${kes(p.price)}</div>
+      <button class="btn small ghost" style="width:100%;margin-top:6px;" onclick="orderMerch('${p.id}')">Order</button>
+    </div>`).join("")}</div>`;
+}
+function orderMerch(id){
+  const p = dbGet("products", []).find(p=>p.id===id); if(!p) return;
+  const requests = dbGet("sdsRequests", []);
+  requests.push({id:uid(), type:"merch", phone:sdsPhone, product:p.name, price:p.price, status:"new", requestedOn:new Date().toISOString()});
+  dbSet("sdsRequests", requests);
+  window.open(waLink(OWNER_WHATSAPP, `Merch order\nPhone: ${sdsPhone}\nItem: ${p.name} (${p.category}) — ${kes(p.price)}`), "_blank");
+}
+function showIngredientForm(){
+  const zones = dbGet("zones", DEFAULT_ZONES);
+  document.getElementById("ingredientFormArea").innerHTML = `
+    <label>Dish / recipe</label><input type="text" id="ingDish" placeholder="e.g. Pilau for 4">
+    <label>Servings</label><input type="number" id="ingServings" min="1" value="1">
+    <label>Ingredients / notes</label><textarea id="ingNotes" placeholder="List what you need or paste your recipe"></textarea>
+    <label>Delivery</label>
+    <select id="ingZone"><option value="own">I'll arrange my own transport</option>${zones.map((z,i)=>`<option value="${i}">${z.name} (${kes(z.fee)})</option>`).join("")}</select>
+    <button class="btn small gold" style="width:100%;" onclick="submitIngredient()">Send order</button>`;
+}
+function submitIngredient(){
+  const dish = document.getElementById("ingDish").value.trim();
+  const servings = document.getElementById("ingServings").value;
+  const notes = document.getElementById("ingNotes").value.trim();
+  const zoneVal = document.getElementById("ingZone").value;
+  const zones = dbGet("zones", DEFAULT_ZONES);
+  const zoneName = zoneVal==="own" ? "Own transport" : zones[zoneVal].name;
+  const deliveryFee = zoneVal==="own" ? 0 : zones[zoneVal].fee;
+  if(!dish){ alert("Tell us the dish."); return; }
+  const requests = dbGet("sdsRequests", []);
+  requests.push({id:uid(), type:"ingredient", phone:sdsPhone, dish, servings, notes, zone:zoneName, deliveryFee, status:"new", requestedOn:new Date().toISOString()});
+  dbSet("sdsRequests", requests);
+  window.open(waLink(OWNER_WHATSAPP, `Ingredient prep order\nPhone: ${sdsPhone}\nDish: ${dish} (x${servings})\nNotes: ${notes}\nDelivery: ${zoneName} (${kes(deliveryFee)})\n\nPlease confirm final cost.`), "_blank");
+  alert("Sent! Ingredient cost + delivery will be confirmed on WhatsApp.");
+}
+
+/* =========================================================================
+   OWNER TAB — 3 accounts, PIN + email
+========================================================================= */
+let ownerSession = null;
+function renderOwnerGate(){
+  const wrap = document.getElementById("ownerGate");
+  if(ownerSession){ renderOwnerDashboard(wrap); return; }
+  wrap.innerHTML = `
+    <div class="card lock-screen">
+      <div class="lockicon">🔐</div>
+      <h3>Owner access</h3>
+      <p>Enter your PIN and the matching email. Up to 3 people can hold owner access.</p>
+      <label>PIN</label><input type="text" id="ownerPinInput" inputmode="numeric" placeholder="4-digit PIN">
+      <label>Email</label><input type="email" id="ownerEmailInput" placeholder="you@example.com">
+      <button class="btn secondary" onclick="ownerLogin()">Unlock</button>
+    </div>`;
+}
+function ownerLogin(){
+  const pin = document.getElementById("ownerPinInput").value.trim();
+  const email = document.getElementById("ownerEmailInput").value.trim().toLowerCase();
+  const accounts = dbGet("ownerAccounts", DEFAULT_OWNER_ACCOUNTS);
+  const match = accounts.find(a=>a.pin && a.pin===pin && a.email.toLowerCase()===email);
+  if(!match){ alert("PIN and email don't match any owner account."); return; }
+  ownerSession = match.name;
+  renderOwnerGate();
+}
+const ownerSubTabs = ["dashboard","zones","access","products","sds","update"];
+let ownerActiveSub = "dashboard";
+function renderOwnerDashboard(wrap){
+  wrap.innerHTML = `
+    <div class="card">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <h3>Welcome, ${ownerSession}</h3>
+        <button class="linkbtn" onclick="ownerLogout()">Log out</button>
+      </div>
+      <div class="sub-tabs">
+        <button class="sub-tab active" data-s="dashboard">Orders</button>
+        <button class="sub-tab" data-s="zones">Zones & fees</button>
+        <button class="sub-tab" data-s="access">Access</button>
+        <button class="sub-tab" data-s="products">Merch</button>
+        <button class="sub-tab" data-s="sds">SDS requests</button>
+        <button class="sub-tab" data-s="update">Update & setup</button>
+      </div>
+      <div id="ownerPanels"></div>
+    </div>`;
+  wrap.querySelectorAll(".sub-tab").forEach(b=>b.addEventListener("click", ()=>{ ownerActiveSub=b.dataset.s; renderOwnerPanels(); }));
+  renderOwnerPanels();
+}
+function ownerLogout(){ ownerSession=null; renderOwnerGate(); }
+function renderOwnerPanels(){
+  document.querySelectorAll("#tab-owner .sub-tab").forEach(b=>b.classList.toggle("active", b.dataset.s===ownerActiveSub));
+  const panels = document.getElementById("ownerPanels");
+  if(ownerActiveSub==="dashboard"){
+    const orders = dbGet("orders", []).slice().reverse();
+    panels.innerHTML = orders.length ? `<table class="admin-table"><tr><th>When</th><th>Type</th><th>Who</th><th>Zone</th><th>Total</th><th>Status</th></tr>
+      ${orders.map(o=>`<tr>
+        <td>${new Date(o.placedOn).toLocaleString()}</td>
+        <td>${o.type}</td>
+        <td>${o.name||o.contactName}</td>
+        <td>${o.zone}</td>
+        <td>${kes(o.total)}</td>
+        <td><select onchange="setOrderStatus('${o.id}', this.value)">
+          ${["new","dispatched","delivered"].map(s=>`<option value="${s}" ${o.status===s?"selected":""}>${s}</option>`).join("")}
+        </select></td>
+      </tr>`).join("")}</table>` : "<p>No orders yet.</p>";
+    const custom = dbGet("customZones", []).filter(z=>z.status==="pending");
+    if(custom.length){
+      panels.innerHTML += `<h4 style="margin-top:16px;">Pending area requests</h4>` + custom.map(z=>`
+        <div class="person-block"><span>${z.name}</span>
+        <input type="number" placeholder="fee" style="width:90px;display:inline-block;margin:0 6px;" id="feefor-${z.id}">
+        <button class="btn small gold" onclick="approveZone('${z.id}')">Add as zone</button></div>`).join("");
+    }
+  } else if(ownerActiveSub==="zones"){
+    const zones = dbGet("zones", DEFAULT_ZONES);
+    panels.innerHTML = `<table class="admin-table"><tr><th>Zone</th><th>Fee</th><th></th></tr>
+      ${zones.map((z,i)=>`<tr><td>${z.name}</td><td>${kes(z.fee)}</td><td><button class="linkbtn" onclick="removeZone(${i})">Remove</button></td></tr>`).join("")}
+      </table>
+      <label>New zone name</label><input type="text" id="newZoneName">
+      <label>Delivery fee (KES)</label><input type="number" id="newZoneFee">
+      <button class="btn small secondary" style="width:100%;" onclick="addZone()">Add zone</button>`;
+  } else if(ownerActiveSub==="access"){
+    const accounts = dbGet("ownerAccounts", DEFAULT_OWNER_ACCOUNTS);
+    const riders = dbGet("riderAccounts", []);
+    panels.innerHTML = `<h4>Owner accounts (max 3)</h4>` + accounts.map((a,i)=>`
+      <div class="person-block">
+        <input type="text" placeholder="Name" value="${a.name}" onchange="updateOwnerAcct(${i},'name',this.value)">
+        <input type="text" placeholder="PIN" value="${a.pin}" style="margin-top:6px;" onchange="updateOwnerAcct(${i},'pin',this.value)">
+        <input type="email" placeholder="Email" value="${a.email}" style="margin-top:6px;" onchange="updateOwnerAcct(${i},'email',this.value)">
+      </div>`).join("") +
+      `<h4 style="margin-top:16px;">Courier / rider accounts</h4>` +
+      riders.map((r,i)=>`<div class="person-block"><span>${r.name} — PIN ${r.pin}</span>
+        <button class="linkbtn" onclick="removeRider(${i})">Remove</button></div>`).join("") +
+      `<label>Rider name</label><input type="text" id="newRiderName">
+      <label>Rider PIN</label><input type="text" id="newRiderPin">
+      <button class="btn small secondary" style="width:100%;" onclick="addRider()">Add rider</button>`;
+  } else if(ownerActiveSub==="products"){
+    const products = dbGet("products", []);
+    panels.innerHTML = `<table class="admin-table"><tr><th>Item</th><th>Category</th><th>Price</th><th></th></tr>
+      ${products.map((p,i)=>`<tr><td>${p.name}</td><td>${p.category}</td><td>${kes(p.price)}</td><td><button class="linkbtn" onclick="removeProduct(${i})">Remove</button></td></tr>`).join("")}
+      </table>
+      <label>Item name</label><input type="text" id="newProdName">
+      <label>Category</label>
+      <select id="newProdCat">${["T-shirts","Shirts","Caps","Panties","Boxers","Trousers","Shorts","Sleepwear","Cups","Bottles","Plates","Tote bags"].map(c=>`<option>${c}</option>`).join("")}</select>
+      <label>Price (KES)</label><input type="number" id="newProdPrice">
+      <button class="btn small secondary" style="width:100%;" onclick="addProduct()">Post item</button>`;
+  } else if(ownerActiveSub==="sds"){
+    const reqs = dbGet("sdsRequests", []).slice().reverse();
+    panels.innerHTML = reqs.length ? reqs.map(r=>{
+      if(r.type==="subscription"){
+        return `<div class="person-block"><span class="badge ${r.status==='active'?'':'warn'}">${r.status}</span>
+          Subscription — ${r.phone}
+          ${r.status==="pending"?`<button class="btn small gold" style="margin-top:8px;" onclick="approveSub('${r.id}')">Confirm payment & activate</button>`:`<span> until ${r.expiresOn}</span>`}
+        </div>`;
+      }
+      return `<div class="person-block"><span class="badge off">${r.type}</span> ${r.phone} — ${r.item||r.product||r.dish||""}</div>`;
+    }).join("") : "<p>No SDS requests yet.</p>";
+  } else if(ownerActiveSub==="update"){
+    panels.innerHTML = `
+      <span class="version-tag">Current version ${APP_VERSION}</span>
+      ${CHANGELOG.map(c=>`<div class="changelog-item"><div class="d">v${c.v} · ${c.d}</div>${c.notes}</div>`).join("")}
+      <div class="note">To roll out a future update: get the new taste-me-app.html, then replace the file wherever this link is hosted (your website folder, or wherever the Share QR points). Everyone's saved data stays as-is on their own phone.</div>
+      <div class="note">For orders and SDS requests to reach the owner's phone automatically, set up a free Firebase project and paste its config into <code>FIREBASE_CONFIG</code> near the top of the file — ask Claude to walk you through it if needed.</div>`;
+  }
+}
+function setOrderStatus(id, status){ const orders=dbGet("orders",[]); const o=orders.find(o=>o.id===id); if(o){o.status=status; dbSet("orders",orders);} renderOwnerPanels(); }
+function approveZone(id){
+  const custom = dbGet("customZones", []);
+  const z = custom.find(z=>z.id===id); if(!z) return;
+  const fee = Number(document.getElementById("feefor-"+id).value)||0;
+  z.status="added";
+  dbSet("customZones", custom);
+  const zones = dbGet("zones", DEFAULT_ZONES); zones.push({name:z.name, fee}); dbSet("zones", zones);
+  renderOwnerPanels();
+}
+function addZone(){
+  const name=document.getElementById("newZoneName").value.trim();
+  const fee=Number(document.getElementById("newZoneFee").value);
+  if(!name||!fee){ alert("Add a zone name and fee."); return; }
+  const zones=dbGet("zones", DEFAULT_ZONES); zones.push({name,fee}); dbSet("zones",zones); renderOwnerPanels();
+}
+function removeZone(i){ const zones=dbGet("zones", DEFAULT_ZONES); zones.splice(i,1); dbSet("zones",zones); renderOwnerPanels(); }
+function updateOwnerAcct(i, field, val){ const a=dbGet("ownerAccounts", DEFAULT_OWNER_ACCOUNTS); a[i][field]=val; dbSet("ownerAccounts", a); }
+function addRider(){
+  const name=document.getElementById("newRiderName").value.trim();
+  const pin=document.getElementById("newRiderPin").value.trim();
+  if(!name||!pin){ alert("Add rider name and PIN."); return; }
+  const riders=dbGet("riderAccounts", []); riders.push({name,pin}); dbSet("riderAccounts", riders); renderOwnerPanels();
+}
+function removeRider(i){ const riders=dbGet("riderAccounts", []); riders.splice(i,1); dbSet("riderAccounts", riders); renderOwnerPanels(); }
+function addProduct(){
+  const name=document.getElementById("newProdName").value.trim();
+  const category=document.getElementById("newProdCat").value;
+  const price=Number(document.getElementById("newProdPrice").value);
+  if(!name||!price){ alert("Add item name and price."); return; }
+  const products=dbGet("products", []); products.push({id:uid(),name,category,price}); dbSet("products",products); renderOwnerPanels();
+}
+function removeProduct(i){ const products=dbGet("products", []); products.splice(i,1); dbSet("products",products); renderOwnerPanels(); }
+function approveSub(id){
+  const reqs = dbGet("sdsRequests", []);
+  const r = reqs.find(r=>r.id===id); if(!r) return;
+  r.status="active"; r.expiresOn = addMonths(todayISO(), SDS_MONTHS);
+  dbSet("sdsRequests", reqs); renderOwnerPanels();
+}
+
+/* =========================================================================
+   RIDER TAB
+========================================================================= */
+let riderSession = null;
+function renderRiderGate(){
+  const wrap = document.getElementById("riderGate");
+  if(riderSession){ renderRiderDash(wrap); return; }
+  wrap.innerHTML = `
+    <div class="card lock-screen">
+      <div class="lockicon">🛵</div>
+      <h3>Courier / rider sign-in</h3>
+      <label>Your name</label><input type="text" id="riderNameInput">
+      <label>PIN</label><input type="text" id="riderPinInput">
+      <button class="btn secondary" onclick="riderLogin()">Sign in</button>
+    </div>`;
+}
+function riderLogin(){
+  const name = document.getElementById("riderNameInput").value.trim();
+  const pin = document.getElementById("riderPinInput").value.trim();
+  const riders = dbGet("riderAccounts", []);
+  const match = riders.find(r=>r.name.toLowerCase()===name.toLowerCase() && r.pin===pin);
+  if(!match){ alert("Name and PIN don't match a rider account. Ask the owner to add you."); return; }
+  riderSession = match.name; renderRiderGate();
+}
+function renderRiderDash(wrap){
+  const orders = dbGet("orders", []).filter(o=>o.status!=="delivered").slice().reverse();
+  wrap.innerHTML = `<div class="card">
+    <div style="display:flex; justify-content:space-between;"><h3>Hi ${riderSession}</h3><button class="linkbtn" onclick="riderLogout()">Log out</button></div>
+    ${orders.length? orders.map(o=>`<div class="person-block">
+      <strong>${o.name||o.contactName}</strong> — ${o.zone}<br>
+      ${(o.items||[]).join(", ")}<br>
+      <span class="badge ${o.status==='dispatched'?'warn':'off'}">${o.status}</span>
+      <select onchange="setOrderStatus('${o.id}', this.value)" style="margin-top:6px;">
+        ${["new","dispatched","delivered"].map(s=>`<option value="${s}" ${o.status===s?"selected":""}>${s}</option>`).join("")}
+      </select>
+    </div>`).join("") : "<p>No deliveries waiting right now.</p>"}
+  </div>`;
+}
+function riderLogout(){ riderSession=null; renderRiderGate(); }
+
+/* =========================================================================
+   INIT
+========================================================================= */
+function renderAll(){
+  renderDrinkList(); renderZonePicker(); recalcOrder();
+  renderGroupZonePicker(); renderGroupPeople(); recalcGroup();
+  renderReviews(); renderShare(); renderSdsGate();
+  renderOwnerGate(); renderRiderGate();
+}
+initFirebase();
+dbGet("zones", DEFAULT_ZONES); dbGet("drinks", DEFAULT_DRINKS); dbGet("ownerAccounts", DEFAULT_OWNER_ACCOUNTS);
+addGroupPerson();
+renderAll();
+</script>
+</body>
+</html>
