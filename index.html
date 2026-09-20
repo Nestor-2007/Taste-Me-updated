@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-<title>TASTE ME — Fresh Blended Drinks, Mombasa</title>
+<title id="pageTitle">TASTE ME — Fresh Blended Drinks, Mombasa</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -41,15 +41,20 @@
 
   /* ---------- Header ---------- */
   header.brandbar{
-    background:linear-gradient(180deg,#FFDDBB 0%, var(--cream) 78%);
-    padding:22px 18px 26px;
+    background:linear-gradient(180deg,#FFDDBB 0%, var(--cream) 85%);
+    padding:20px 18px 20px;
     border-bottom:3px solid var(--sand);
-    display:flex; align-items:center; gap:14px;
+    display:flex; flex-direction:column; align-items:center; text-align:center; gap:10px;
   }
   header.brandbar .logo{flex:0 0 auto;}
-  header.brandbar .word{flex:1 1 auto;}
-  header.brandbar h1{font-size:28px; letter-spacing:.5px; line-height:1;}
-  header.brandbar .tag{font-size:12.5px; color:var(--ink-soft); font-weight:600;}
+  header.brandbar .logo img{height:150px; width:auto; display:block; filter:drop-shadow(0 6px 10px rgba(43,24,15,.18));}
+  header.brandbar .word{display:flex; flex-direction:column; align-items:center; gap:8px;}
+  header.brandbar .tag{font-size:14px; color:var(--ink-soft); font-weight:700; line-height:1.3; max-width:320px;}
+  header.brandbar .tag.contact{
+    font-size:12px; font-weight:700; color:var(--ink-soft);
+    background:rgba(255,255,255,.75); border:1px solid var(--line); border-radius:999px;
+    padding:5px 14px; margin:0;
+  }
 
   /* ---------- Tabs content shell ---------- */
   main{padding:16px 16px 30px;}
@@ -74,7 +79,7 @@
   .pill.active{background:var(--tongue); border-color:var(--tongue); color:#fff;}
 
   label{display:block; font-weight:700; font-size:13px; margin:12px 0 5px; color:var(--ink);}
-  input[type=text], input[type=tel], input[type=email], input[type=number], select, textarea{
+  input[type=text], input[type=tel], input[type=email], input[type=number], input[type=datetime-local], input[type=time], select, textarea{
     width:100%; padding:11px 12px; border-radius:var(--radius-sm); border:1.5px solid var(--line);
     background:#FFFDF9; font-family:'Manrope',sans-serif; font-size:14.5px; color:var(--ink);
   }
@@ -102,6 +107,14 @@
   .total-line{display:flex; justify-content:space-between; padding:6px 0; font-size:14px; color:var(--ink-soft);}
   .total-line.grand{font-size:18px; font-weight:800; color:var(--ink); border-top:2px solid var(--sand); margin-top:8px; padding-top:10px;}
 
+  .plan-grid{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:10px 0;}
+  .plan-tile{border:1.5px solid var(--line); border-radius:var(--radius-sm); padding:12px 12px 10px; background:#FFFDF9; cursor:pointer; text-align:left; font-family:inherit; color:var(--ink); position:relative;}
+  .plan-tile.selected{border-color:var(--tongue); background:#FFF0F1;}
+  .plan-tile .pl-name{font-weight:800; font-size:14px; display:block;}
+  .plan-tile .pl-price{font-weight:800; font-size:20px; color:var(--tongue-dark); display:block; margin-top:2px;}
+  .plan-tile .pl-detail{font-size:12px; color:var(--ink-soft); display:block; margin-top:2px;}
+  .plan-tile .pl-save{display:inline-block; margin-top:6px; background:var(--leaf); color:#fff; font-size:11px; font-weight:800; padding:2px 8px; border-radius:999px;}
+
   .zone-list{display:grid; grid-template-columns:1fr 1fr; gap:8px; margin:10px 0;}
   .zone-item{border:1.5px solid var(--line); border-radius:var(--radius-sm); padding:9px 10px; font-size:13px; background:#FFFDF9; cursor:pointer;}
   .zone-item.selected{border-color:var(--tongue); background:#FFF0F1;}
@@ -123,6 +136,12 @@
 
   .lock-screen{text-align:center; padding:26px 10px;}
   .lock-screen .lockicon{font-size:40px;}
+
+  /* ---------- Ordering lock ---------- */
+  .lock-banner{display:none; background:#FFF0F1; border:2px solid var(--tongue); border-radius:var(--radius-lg); padding:18px 16px; margin-bottom:14px; text-align:center; box-shadow:var(--shadow);}
+  .lock-banner .lockbig{font-size:34px; line-height:1;}
+  .lock-banner p{margin:4px 0 0; color:var(--ink);}
+  section.tab.locked > .card{opacity:.42; pointer-events:none; user-select:none; filter:grayscale(.35);}
 
   .review-item{border-bottom:1px solid var(--line); padding:10px 0;}
   .stars{color:var(--gold); letter-spacing:2px;}
@@ -169,40 +188,12 @@
 <div class="app">
 
   <header class="brandbar">
-    <div class="logo">
-      <svg width="66" height="80" viewBox="0 0 130 158" xmlns="http://www.w3.org/2000/svg">
-        <!-- tongue -->
-        <path d="M25 128 C25 108 45 96 65 96 C85 96 105 108 105 128 C105 148 88 156 65 156 C42 156 25 148 25 128 Z" fill="#E8384F"/>
-        <path d="M25 128 C25 108 45 96 65 96 C85 96 105 108 105 128 C105 148 88 156 65 156 C42 156 25 148 25 128 Z" fill="url(#tongueShade)"/>
-        <path d="M65 100 L65 150" stroke="#B81F35" stroke-width="4" stroke-linecap="round"/>
-        <ellipse cx="65" cy="128" rx="40" ry="26" fill="none"/>
-        <!-- falling drops, angled 30deg -->
-        <g transform="rotate(30 40 68)">
-          <path d="M40 55 C46 63 46 71 40 74 C34 71 34 63 40 55 Z" fill="#F2A22B"/>
-        </g>
-        <g transform="rotate(30 52 82)">
-          <path d="M52 66 C60 76 60 87 52 91 C44 87 44 76 52 66 Z" fill="#3E8F5C"/>
-        </g>
-        <!-- cup -->
-        <path d="M30 8 H88 L82 62 C81 70 74 76 66 76 H52 C44 76 37 70 36 62 L30 8 Z" fill="#FFFDF7" stroke="#C98A2B" stroke-width="3"/>
-        <path d="M34 24 L84 24" stroke="#E9D9BE" stroke-width="2"/>
-        <path d="M36.5 30 L81.5 30 L76 60 C75 66 70 70 64 70 H54 C48 70 43 66 42 60 L36.5 30 Z" fill="#FFC65C" opacity="0.85"/>
-        <!-- dome lid -->
-        <rect x="24" y="0" width="70" height="12" rx="6" fill="#C98A2B"/>
-        <path d="M30 0 C30 -10 88 -10 88 0" fill="none" stroke="#C98A2B" stroke-width="6" stroke-linecap="round" transform="translate(0,10)"/>
-        <line x1="59" y1="-4" x2="65" y2="14" stroke="#B81F35" stroke-width="5" stroke-linecap="round" transform="translate(0,10)"/>
-        <defs>
-          <linearGradient id="tongueShade" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0" stop-color="#ffffff" stop-opacity="0.15"/>
-            <stop offset="1" stop-color="#000000" stop-opacity="0.08"/>
-          </linearGradient>
-        </defs>
-      </svg>
+    <div class="logo" id="logoWrap">
+      <img id="brandLogo" src="data:image/png;base64,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" alt="Taste Me logo">
     </div>
     <div class="word">
-      <h1>TASTE ME</h1>
-      <div class="tag">Fresh blended drinks, delivered around Mombasa</div>
-      <div class="tag" style="margin-top:2px;">✉️ nestormshindani65@gmail.com</div>
+      <div class="tag" id="brandTagline">Fresh blended drinks, delivered around Mombasa</div>
+      <div class="tag contact" id="brandEmailLine">✉️ nestormshindani65@gmail.com</div>
     </div>
   </header>
 
@@ -210,10 +201,33 @@
 
     <!-- ============ ORDER ============ -->
     <section class="tab active" id="tab-order">
+      <div class="lock-banner" id="lockBanner-order"></div>
       <div class="card">
-        <h3>Pick your drinks</h3>
-        <p>Flat KES 100 per cup. Choose one delivery zone, or arrange your own transport.</p>
+        <h3 id="orderHeading">Pick your drinks</h3>
+        <p id="orderBlurb">Flat KES 100 per cup. Choose one delivery zone, or arrange your own transport.</p>
         <div id="drinkList"></div>
+      </div>
+
+      <div class="card" id="subCard">
+        <h3>Subscribe &amp; save</h3>
+        <p id="subBlurb">One cup a day, delivered on your schedule, at a lower price per cup than ordering one by one.</p>
+        <div class="plan-grid" id="subPlans"></div>
+        <label>Favourite flavour</label>
+        <select id="subFlavour"></select>
+        <label>Your name</label>
+        <input type="text" id="subName" placeholder="Full name">
+        <label>Phone number</label>
+        <input type="tel" id="subPhone" placeholder="07xx xxx xxx">
+        <label>Delivery</label>
+        <select id="subZone" onchange="recalcSub()"></select>
+        <div class="note" id="subDropNote" style="display:none;"></div>
+        <div class="total-line"><span id="subPlanLabel">Plan</span><span id="subPlanPrice">KES 0</span></div>
+        <div class="total-line"><span>Delivery per drop</span><span id="subDelivery">KES 0</span></div>
+        <div class="total-line" id="subDropsRow" style="display:none;"><span id="subDropsLabel"></span><span id="subDropsTotal"></span></div>
+        <div class="total-line grand"><span>Pay now (plan)</span><span id="subTotal">KES 0</span></div>
+        <div class="note">Pay the plan price by M-Pesa to <span id="subMpesa"></span> once we confirm on WhatsApp. The delivery fee for your area is paid per delivery; choose your own transport to skip it. Loyalty stamps and referral codes apply to single orders only.</div>
+        <button class="btn" onclick="placeSubscription('whatsapp')">Subscribe on WhatsApp</button>
+        <button class="btn ghost" onclick="placeSubscription('email')">Email my subscription instead</button>
       </div>
 
       <div class="card">
@@ -239,8 +253,12 @@
         <label>Your name</label>
         <input type="text" id="orderName" placeholder="Full name">
         <label>Phone number</label>
-        <input type="tel" id="orderPhone" placeholder="07xx xxx xxx">
+        <input type="tel" id="orderPhone" placeholder="07xx xxx xxx" oninput="recalcOrder()">
+        <label>Referral code (optional)</label>
+        <input type="tel" id="orderReferral" placeholder="Friend's phone number" oninput="recalcOrder()">
+        <div class="note" id="loyaltyNote" style="display:none;"></div>
         <div class="total-line"><span>Drinks</span><span id="sumDrinks">KES 0</span></div>
+        <div class="total-line" id="sumDiscountRow" style="display:none; color:var(--leaf); font-weight:700;"><span>Discount</span><span id="sumDiscount">-KES 0</span></div>
         <div class="total-line"><span>Delivery</span><span id="sumDelivery">KES 0</span></div>
         <div class="total-line grand"><span>Total</span><span id="sumTotal">KES 0</span></div>
         <button class="btn" onclick="placeOrder()">Send order on WhatsApp</button>
@@ -250,9 +268,10 @@
 
     <!-- ============ GROUP ORDER ============ -->
     <section class="tab" id="tab-group">
+      <div class="lock-banner" id="lockBanner-group"></div>
       <div class="card">
         <h3>Group order</h3>
-        <p>Order together with people in the same area and split one delivery fee. Delivery for a group is the zone fee <strong>+ KES 80</strong>. Example: Miritini KES 50 + KES 80 = <strong>KES 130</strong> for the whole group.</p>
+        <p>Order together with people in the same area and split one delivery fee. The fee shown next to each zone is the full delivery charge for the whole group.</p>
         <label>Delivery zone for the group</label>
         <div class="zone-list" id="groupZonePicker"></div>
       </div>
@@ -269,7 +288,7 @@
         <label>Contact phone</label>
         <input type="tel" id="groupContactPhone" placeholder="07xx xxx xxx">
         <div class="total-line"><span>Drinks (all people)</span><span id="gSumDrinks">KES 0</span></div>
-        <div class="total-line"><span>Group delivery (zone + KES 80)</span><span id="gSumDelivery">KES 0</span></div>
+        <div class="total-line"><span>Group delivery</span><span id="gSumDelivery">KES 0</span></div>
         <div class="total-line grand"><span>Total</span><span id="gSumTotal">KES 0</span></div>
         <button class="btn" onclick="placeGroupOrder()">Send group order on WhatsApp</button>
         <button class="btn ghost" onclick="emailGroupOrder()">Email this group order instead</button>
@@ -279,7 +298,7 @@
     <!-- ============ SDS ============ -->
     <section class="tab" id="tab-sds">
       <div class="card">
-        <h3>Surprise Paradise <span class="badge warn">SDS</span></h3>
+        <h3 id="sdsHeading">Surprise Paradise <span class="badge warn" id="sdsBadgeTag">SDS</span></h3>
         <p>A small members' corner for extra services. KES 50 unlocks access for 4 months.</p>
         <div id="sdsGate"></div>
       </div>
@@ -323,12 +342,35 @@
     <!-- ============ SHARE ============ -->
     <section class="tab" id="tab-share">
       <div class="card" style="text-align:center;">
-        <h3>Share Taste Me</h3>
+        <h3 id="shareHeading">Share Taste Me</h3>
         <p>Scan or send this link so friends can order too.</p>
-        <p style="font-size:13px;">Questions? Email <strong>nestormshindani65@gmail.com</strong></p>
-        <div class="qr-box"><img id="qrImg" width="180" height="180" alt="QR code to order Taste Me"></div>
+        <p style="font-size:13px;">Questions? Email <strong id="shareEmail">nestormshindani65@gmail.com</strong></p>
+        <div class="qr-box"><img id="qrImg" width="180" height="180" alt="QR code to order"></div>
         <div class="linkbox"><span id="shareLink"></span></div>
         <button class="btn small ghost" style="width:100%; margin-top:10px;" onclick="copyShareLink()">Copy link</button>
+      </div>
+    </section>
+
+    <!-- ============ ADS ============ -->
+    <section class="tab" id="tab-ads">
+      <div class="card">
+        <h3>Local Ads <span class="badge warn">Ads</span></h3>
+        <p id="adsIntro">Businesses — including our own other ventures — can advertise here for our customers to see.</p>
+        <div id="adsList"></div>
+      </div>
+      <div class="card">
+        <h3>Want to advertise here?</h3>
+        <label>Business name</label>
+        <input type="text" id="adReqBusiness" placeholder="Your business name">
+        <label>What you offer</label>
+        <input type="text" id="adReqTagline" placeholder="Short line about what you sell">
+        <label>Your phone</label>
+        <input type="tel" id="adReqPhone" placeholder="07xx xxx xxx">
+        <label>Photos / a short video (optional)</label>
+        <input type="file" id="adReqMedia" accept="image/*,video/*" multiple>
+        <p style="font-size:12px;">Pick straight from your gallery — no link needed. Keep videos short and photos modest in size so they load quickly for customers.</p>
+        <button class="btn gold" id="adReqBtn" onclick="requestAd()">Send request</button>
+        <p class="note">We'll confirm pricing and get your ad live on WhatsApp.</p>
       </div>
     </section>
 
@@ -347,10 +389,11 @@
   <nav class="bottomnav">
     <button class="navitem active" data-tab="order" onclick="showTab('order')"><span class="ic">🥤</span>Order</button>
     <button class="navitem" data-tab="group" onclick="showTab('group')"><span class="ic">👥</span>Group</button>
-    <button class="navitem" data-tab="sds" onclick="showTab('sds')"><span class="ic">🎁</span>SDS</button>
+    <button class="navitem" data-tab="sds" onclick="showTab('sds')"><span class="ic">🎁</span><span id="sdsNavLabel">SDS</span></button>
     <button class="navitem" data-tab="track" onclick="showTab('track')"><span class="ic">📍</span>Track</button>
     <button class="navitem" data-tab="reviews" onclick="showTab('reviews')"><span class="ic">⭐</span>Reviews</button>
     <button class="navitem" data-tab="share" onclick="showTab('share')"><span class="ic">🔗</span>Share</button>
+    <button class="navitem" data-tab="ads" onclick="showTab('ads')"><span class="ic">📣</span>Ads</button>
     <button class="navitem" data-tab="owner" onclick="showTab('owner')"><span class="ic">🔐</span>Owner</button>
     <button class="navitem" data-tab="rider" onclick="showTab('rider')"><span class="ic">🛵</span>Rider</button>
   </nav>
@@ -370,20 +413,78 @@
 ========================================================================= */
 const FIREBASE_CONFIG = null; // paste your Firebase config object here, e.g. {apiKey:"...", projectId:"...", ...}
 
-const OWNER_WHATSAPP = ["254784870942","254729247704"]; // 0784870942 / 0729247704
-const OWNER_PHONE_DISPLAY = "0784870942 / 0729247704";
-const OWNER_EMAIL_CONTACT = "nestormshindani65@gmail.com";
-const APP_VERSION = "3.0";
+/* =========================================================================
+   WHITE-LABEL SETUP — read this first
+   This file is a reusable template. To launch a NEW vendor's copy of this
+   app, you only need to edit the BRAND block right below. Everything else
+   (header text, page title, storage, WhatsApp messages, Ads/SDS wording,
+   colors) reads from these values automatically.
+
+   Steps for a new vendor:
+   1. Change every field in BRAND below (slug, name, tagline, contact info,
+      colors, whether Group/SDS/Ads are turned on).
+   2. Rename the file itself (e.g. bakeco-app.html) and re-host/re-share it
+      — each vendor should have their OWN copy of this file.
+   3. Rename DEFAULT_DRINKS (a few lines down) to that vendor's actual menu
+      — or leave the placeholders and let the vendor edit items from their
+      own Owner dashboard after launch (Owner tab → Products).
+   4. Delivery zones, riders, and owner PIN/emails are all editable from
+      inside the app itself (Owner dashboard) — no code changes needed.
+   5. Leave FIREBASE_CONFIG null for single-phone testing, or give this
+      vendor their OWN Firebase project if they need multi-device sync.
+      Never point two different vendors at the same Firebase project.
+========================================================================= */
+const BRAND = {
+  slug: "tm",                   // storage-key prefix — Taste Me's existing saved data uses "tm_..." keys, so this stays "tm" to keep reading it. Give every NEW vendor's copy its own unique slug.
+  firebaseCollection: "tasteme", // Firebase collection name, if you set up sync — Taste Me's original Firebase (if any) used "tasteme", kept as-is here. Give each new vendor their own value AND their own Firebase project.
+  name: "TASTE ME",             // shown in the header and browser tab
+  tagline: "Fresh blended drinks, delivered around Mombasa",
+  itemSingular: "drink",        // e.g. "drink", "loaf", "meal" — used in a few sentences below
+  itemPlural: "drinks",
+  unitLabel: "cup",             // e.g. "cup", "loaf", "order" — used in the flat-price sentence
+  currency: "KES",
+  unitPrice: 100,               // flat price per item, shown in the order-card blurb
+  contactEmail: "nestormshindani65@gmail.com",
+  whatsapp: ["254784870942","254729247704"], // international format, no +. First number is used for WhatsApp links.
+  whatsappDisplay: "0784870942 / 0729247704", // shown to customers as M-Pesa / call number
+  ownerPin: "4657",             // default PIN for Owner 1 — change per vendor
+  primaryColor: "#E8384F",      // main brand color (buttons, highlights)
+  primaryColorDark: "#B81F35",  // darker shade, used for shadows/accents
+  logo: { type:"builtin" },     // {type:"builtin"} keeps the Taste Me logo image, or {type:"emoji", value:"🍞"} for an instant swap
+  enableGroupOrders: true,      // set false to hide the Group tab entirely
+  enableSubscriptions: true,    // set false to hide the weekly/monthly drink subscription card on the Order tab
+  enableSds: true,              // set false to hide the subscription/extras tab entirely
+  orderHours: { enabled:true, open:"07:00", close:"19:00" }, // OPTIONAL daily opening hours. Set enabled:true and customers can only order between open and close (24-hour clock). Baked into the file, so it works on EVERY customer's phone even without Firebase.
+  enableAds: true,              // set false to hide the local-ads marketplace tab
+  sdsName: "Surprise Paradise",
+  sdsBadge: "SPS",
+  merchName: "Branded merch"    // name shown for the merch-store line inside SDS
+};
+
+const OWNER_WHATSAPP = BRAND.whatsapp;
+const OWNER_PHONE_DISPLAY = BRAND.whatsappDisplay;
+const OWNER_EMAIL_CONTACT = BRAND.contactEmail;
+const APP_VERSION = "3.7";
 const CHANGELOG = [
+  {v:"3.7", d:"19 Sep 2026", notes:"Added an ordering lock. In Owner → Lock orders you can lock ordering right now (optionally reopening by itself at a set time), schedule locks for a date and time range, or set daily opening hours. While locked, customers see a closed message on the Order and Group tabs and cannot send single, group or subscription orders. Tracking, reviews and the other tabs keep working. Manual and scheduled locks need Firebase sync to reach customers' phones; daily hours can also be set in BRAND.orderHours and work everywhere."},
+  {v:"3.6", d:"18 Sep 2026", notes:"Group order delivery zones now show the full delivery charge for the whole group (zone fee plus the group add-on already included) instead of the 'fee + KES 80' breakdown. The same full charge appears in the summary and in the WhatsApp and email messages."},
+  {v:"3.5", d:"18 Sep 2026", notes:"Subscriptions to Nyali and Mtwapa now get 3 drops a week instead of daily delivery. The subscription card shows the schedule and the delivery total for the plan, and the order records drops per week. Edit SUB_DROPS_PER_WEEK near the top of the script to change the number or add more zones."},
+  {v:"3.4", d:"18 Sep 2026", notes:"Added weekly (KES 600 for 7 cups) and monthly (KES 2,500 for 30 cups) drink subscriptions on the Order tab. Customers pick a plan, a favourite flavour and their delivery area, then send the request on WhatsApp or email. Subscriptions appear in the Owner Orders list (type: subscription), in Track, and on the rider's list. Change plan prices in SUB_PLANS near the top of the script."},
+  {v:"3.3", d:"16 Sep 2026", notes:"Ads can now include photos and a short video, picked straight from the gallery — no link needed, like a marketplace listing. Available when requesting an ad, when the owner activates a request, and when the owner posts an ad directly. Media is stored inside the app's own data, and syncs the same way everything else does — keep videos short and photos modest in size."},
+  {v:"3.2", d:"16 Sep 2026", notes:"Added an Ads tab. Any business — including Taste Me's own other ventures, or outside businesses that pay for a slot — can appear there with a name, tagline, category and contact button. Customers only ever see that; managing requests, who paid, how much, and for how long lives entirely in the Owner dashboard's new Ads section, invisible to customers."},
+  {v:"3.1", d:"15 Sep 2026", notes:"Added growth tools: loyalty stamps (every 5 cups = 1 free cup, tracked automatically by phone number), referral codes (friend's phone number gives the new customer KES 20 off and credits the referrer KES 20), and a Growth tab in the Owner dashboard showing zone performance, top loyal customers, and referral activity."},
   {v:"3.0", d:"15 Sep 2026", notes:"New logo (cup + drops + tongue), transportation zones with fees, group ordering, Surprise Paradise (SDS) subscription section, three-person owner login with PIN + email, courier login, editable zones, Update tab."},
   {v:"2.1", d:"15 Sep 2026", notes:"Added Track tab, Owner dispatch/zones/riders, Rider tab with live-location sharing."},
   {v:"2.0", d:"11 Sep 2026", notes:"Rebranded to TASTE ME. Order, Reviews, Share, PIN-gated Owner dashboard."}
 ];
 
 const DEFAULT_DRINKS = [
-  {id:"mango", name:"Mango Punch", price:100, color:"var(--mango)"},
-  {id:"green", name:"Tropical Green", price:100, color:"var(--leaf)"},
-  {id:"melon", name:"Watermelon Cooler", price:100, color:"var(--melon)"}
+  // This is Taste Me's real menu. If you duplicate this file for a NEW
+  // vendor, rename these three (or leave placeholders and edit them from
+  // that vendor's Owner dashboard → Products after launch).
+  {id:"mango", name:"Mango Punch", price:BRAND.unitPrice, color:"var(--mango)"},
+  {id:"green", name:"Tropical Green", price:BRAND.unitPrice, color:"var(--leaf)"},
+  {id:"melon", name:"Watermelon Cooler", price:BRAND.unitPrice, color:"var(--melon)"}
 ];
 
 const DEFAULT_ZONES = [
@@ -401,11 +502,25 @@ const DEFAULT_ZONES = [
   {name:"Docks", fee:100}
 ];
 const GROUP_FEE_ADDON = 80;
+
+/* ---- subscription plans (edit prices/cups here) ---- */
+const SUB_PLANS = [
+  {id:"weekly",  name:"Weekly plan",  cups:7,  days:7,  price:600,  detail:"7 cups, one a day"},
+  {id:"monthly", name:"Monthly plan", cups:30, days:30, price:2500, detail:"30 cups, one a day"}
+];
+/* Far zones get fewer subscription deliveries: zone name (lowercase) -> drops per week */
+const SUB_DROPS_PER_WEEK = { "nyali":3, "mtwapa":3 };
 const SDS_PRICE = 50;
 const SDS_MONTHS = 4;
 
+/* ---- growth features: loyalty + referrals ---- */
+const LOYALTY_CUPS_NEEDED = 5;      // every 5 cups bought = 1 free cup
+const LOYALTY_REWARD_VALUE = 100;   // value of the free cup
+const REFERRAL_DISCOUNT = 20;       // KES off for a new customer using a referral code
+const REFERRAL_CREDIT = 20;         // KES credit given to the referrer, applied to their next order
+
 const DEFAULT_OWNER_ACCOUNTS = [
-  {name:"Owner 1", pin:"4657", email:"nestormshindani65@gmail.com"},
+  {name:"Owner 1", pin:BRAND.ownerPin, email:BRAND.contactEmail},
   {name:"Owner 2", pin:"", email:""},
   {name:"Owner 3", pin:"", email:""}
 ];
@@ -422,14 +537,15 @@ function initFirebase(){
       Object.keys(STORE_KEYS).forEach(k=>attachSync(k)); };
   };
 }
-const STORE_KEYS = {
-  zones:"tm_zones", drinks:"tm_drinks", orders:"tm_orders", reviews:"tm_reviews",
-  products:"tm_products", sdsRequests:"tm_sdsRequests", ownerAccounts:"tm_ownerAccounts",
-  riderAccounts:"tm_riderAccounts", customZones:"tm_customZoneRequests"
-};
+const STORE_KEYS = Object.fromEntries(Object.entries({
+  zones:"zones", drinks:"drinks", orders:"orders", reviews:"reviews",
+  products:"products", sdsRequests:"sdsRequests", ownerAccounts:"ownerAccounts",
+  riderAccounts:"riderAccounts", customZones:"customZoneRequests",
+  loyalty:"loyalty", credits:"credits", referrals:"referrals", ads:"ads", orderLock:"orderlock"
+}).map(([k,v])=>[k, BRAND.slug+"_"+v])); // prefixed with BRAND.slug so each vendor's data never mixes, even if two copies ever ran on the same device
 function attachSync(key){
   const col = STORE_KEYS[key];
-  fbDb.collection("tasteme").doc(col).onSnapshot(doc=>{
+  fbDb.collection(BRAND.firebaseCollection).doc(col).onSnapshot(doc=>{
     if(doc.exists){ localStorage.setItem(col, JSON.stringify(doc.data().items||[])); renderAll(); }
   });
 }
@@ -440,7 +556,7 @@ function dbGet(key, fallback){
 }
 function dbSet(key, value){
   localStorage.setItem(STORE_KEYS[key], JSON.stringify(value));
-  if(fbDb){ fbDb.collection("tasteme").doc(STORE_KEYS[key]).set({items:value}); }
+  if(fbDb){ fbDb.collection(BRAND.firebaseCollection).doc(STORE_KEYS[key]).set({items:value}); }
 }
 
 /* ---------------- helpers ---------------- */
@@ -452,6 +568,101 @@ function kes(n){ return "KES "+Number(n).toLocaleString(); }
 function todayISO(){ return new Date().toISOString().slice(0,10); }
 function addMonths(iso, months){ const d=new Date(iso); d.setMonth(d.getMonth()+months); return d.toISOString().slice(0,10); }
 function uid(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,7); }
+
+/* =========================================================================
+   ORDERING LOCK — stops customers ordering during locked times
+   Managed in Owner → "Lock orders". Three ways to lock:
+   1. Manual: "Lock now" (optionally reopens by itself at a set time)
+   2. Scheduled: one-off windows (lunch break, day off, out delivering...)
+   3. Daily opening hours: closed outside e.g. 07:00–19:00
+   Locks Order, Group and Subscription ordering. Track, Reviews, etc. stay open.
+========================================================================= */
+function escHtml(s){ return String(s==null?"":s).replace(/[&<>"']/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+function makeDefaultOrderLock(){
+  const h = BRAND.orderHours || {};
+  return {manual:false, reopenAt:"", message:"", dailyOn:!!h.enabled, open:h.open||"07:00", close:h.close||"19:00", windows:[]};
+}
+// read-only on purpose: never writes defaults into storage, so changing BRAND.orderHours in a new file version still takes effect
+function getOrderLock(){
+  const base = makeDefaultOrderLock();
+  try{
+    const raw = localStorage.getItem(STORE_KEYS.orderLock);
+    if(raw){ const saved = JSON.parse(raw); if(saved && typeof saved==="object" && !Array.isArray(saved)) Object.assign(base, saved); }
+  }catch(e){}
+  if(!Array.isArray(base.windows)) base.windows = [];
+  return base;
+}
+function saveOrderLock(patch){
+  const L = getOrderLock(); Object.assign(L, patch);
+  dbSet("orderLock", L); applyOrderLock(); renderOwnerPanels();
+}
+function fmtWhen(ms){ return new Date(ms).toLocaleString([], {weekday:"short", day:"numeric", month:"short", hour:"numeric", minute:"2-digit"}); }
+function fmtClock(hhmm){ const [h,m]=String(hhmm).split(":").map(Number); const d=new Date(); d.setHours(h||0,m||0,0,0); return d.toLocaleTimeString([], {hour:"numeric", minute:"2-digit"}); }
+function orderLockStatus(){
+  const L = getOrderLock(); const now = Date.now();
+  // 1. manual lock (ends by itself if a reopen time was set)
+  if(L.manual){
+    const end = L.reopenAt ? new Date(L.reopenAt).getTime() : null;
+    if(!end || now < end) return {locked:true, source:"manual", msg:(L.message||"").trim() || "We've paused orders for now. Please check back soon!", until:end?fmtWhen(end):null};
+  }
+  // 2. scheduled windows
+  for(const w of L.windows){
+    const s = new Date(w.from).getTime(), e = new Date(w.to).getTime();
+    if(now>=s && now<e) return {locked:true, source:"window", msg:(w.msg||"").trim() || "We're not taking orders at the moment.", until:fmtWhen(e)};
+  }
+  // 3. daily opening hours (supports overnight, e.g. 18:00–02:00)
+  if(L.dailyOn && L.open && L.close && L.open!==L.close){
+    const d = new Date(), mins = d.getHours()*60+d.getMinutes();
+    const [oh,om] = L.open.split(":").map(Number), [ch,cm] = L.close.split(":").map(Number);
+    const o = oh*60+om, c = ch*60+cm;
+    const isOpen = o<c ? (mins>=o && mins<c) : (mins>=o || mins<c);
+    if(!isOpen) return {locked:true, source:"hours", msg:`We're closed right now. We take orders daily from ${fmtClock(L.open)} to ${fmtClock(L.close)}.`, until:null};
+  }
+  return {locked:false};
+}
+function applyOrderLock(){
+  const st = orderLockStatus();
+  ["order","group"].forEach(t=>{
+    const sec = document.getElementById("tab-"+t), ban = document.getElementById("lockBanner-"+t);
+    if(sec) sec.classList.toggle("locked", st.locked);
+    if(ban){
+      ban.style.display = st.locked ? "block" : "none";
+      ban.innerHTML = st.locked ? `<div class="lockbig">🔒</div><h3>Ordering is closed right now</h3><p>${escHtml(st.msg)}</p>${st.until?`<p><strong>Reopens ${escHtml(st.until)}</strong></p>`:""}` : "";
+    }
+  });
+}
+// call at the top of every "send order" function
+function blockIfLocked(){
+  const st = orderLockStatus();
+  if(!st.locked) return false;
+  alert(st.msg + (st.until ? "\n\nOrdering reopens "+st.until+"." : ""));
+  applyOrderLock();
+  return true;
+}
+/* ---- owner actions ---- */
+function lockNow(){
+  const message = (document.getElementById("lockMsg").value||"").trim();
+  const re = document.getElementById("lockReopen").value;
+  if(re && new Date(re).getTime() <= Date.now()){ alert("Pick a reopening time that's in the future."); return; }
+  saveOrderLock({manual:true, reopenAt:re||"", message});
+}
+function unlockNow(){ saveOrderLock({manual:false, reopenAt:"", message:""}); }
+function addLockWindow(){
+  const from = document.getElementById("winFrom").value, to = document.getElementById("winTo").value;
+  const msg = (document.getElementById("winMsg").value||"").trim();
+  if(!from || !to){ alert("Pick both a start and an end time."); return; }
+  if(new Date(to) <= new Date(from)){ alert("The end time must be after the start time."); return; }
+  const L = getOrderLock(); L.windows.push({id:uid(), from, to, msg});
+  saveOrderLock({windows:L.windows});
+}
+function removeLockWindow(id){ const L=getOrderLock(); saveOrderLock({windows:L.windows.filter(w=>w.id!==id)}); }
+function saveDailyHours(){
+  const on = document.getElementById("hoursOn").checked;
+  const open = document.getElementById("hoursOpen").value, close = document.getElementById("hoursClose").value;
+  if(on && (!open || !close)){ alert("Set both an opening and a closing time."); return; }
+  if(on && open===close){ alert("Opening and closing time can't be the same."); return; }
+  saveOrderLock({dailyOn:on, open:open||"07:00", close:close||"19:00"});
+}
 
 /* ---------------- tab switching ---------------- */
 function showTab(name){
@@ -505,16 +716,69 @@ function renderZonePicker(){
     <span class="zn">${z.name}</span><span class="zf">${kes(z.fee)}</span></div>`).join("");
 }
 function pickZone(i){ selectedZone=i; renderZonePicker(); recalcOrder(); }
+
+/* ---- loyalty + referral helpers ---- */
+function getLoyalty(phone){ const l=dbGet("loyalty",{}); return l[phone]||{cups:0, redeemed:0}; }
+function getCredit(phone){ const c=dbGet("credits",{}); return c[phone]||0; }
+function previewDiscounts(phone, referralPhone, cupsInOrder){
+  const notes=[]; let discount=0;
+  let referralOk=false;
+  if(phone && referralPhone && referralPhone!==phone){
+    const orders = dbGet("orders", []);
+    if(orders.some(o=>o.phone===referralPhone)){
+      referralOk=true; discount += REFERRAL_DISCOUNT;
+      notes.push(`Referral code applied: -${kes(REFERRAL_DISCOUNT)}`);
+    }
+  }
+  const credit = phone ? getCredit(phone) : 0;
+  if(credit>0){ discount += credit; notes.push(`Referral credit used: -${kes(credit)}`); }
+  const loy = phone ? getLoyalty(phone) : {cups:0, redeemed:0};
+  const totalCupsAfter = loy.cups + cupsInOrder;
+  const rewardsEarned = Math.floor(totalCupsAfter/LOYALTY_CUPS_NEEDED);
+  const rewardAvailable = cupsInOrder>0 && (rewardsEarned - loy.redeemed) > 0;
+  if(rewardAvailable){ discount += LOYALTY_REWARD_VALUE; notes.push(`🎉 Loyalty reward: free cup (-${kes(LOYALTY_REWARD_VALUE)})`); }
+  const cupsThisCycle = totalCupsAfter - rewardsEarned*LOYALTY_CUPS_NEEDED;
+  const progressNote = cupsInOrder>0
+    ? (rewardAvailable ? "Free cup applied this order! 🎉" : `${cupsThisCycle}/${LOYALTY_CUPS_NEEDED} cups toward your next free cup.`)
+    : "";
+  return {discount, notes, referralOk, credit, rewardAvailable, progressNote};
+}
+function commitDiscounts(phone, referralPhone, cupsInOrder, preview){
+  if(preview.credit>0){ const credits=dbGet("credits",{}); credits[phone]=0; dbSet("credits",credits); }
+  if(preview.referralOk){
+    const credits = dbGet("credits", {});
+    credits[referralPhone] = (credits[referralPhone]||0) + REFERRAL_CREDIT;
+    dbSet("credits", credits);
+    const log = dbGet("referrals", []);
+    log.push({id:uid(), referrer:referralPhone, referred:phone, date:new Date().toISOString()});
+    dbSet("referrals", log);
+  }
+  const loyalty = dbGet("loyalty", {});
+  const prev = loyalty[phone] || {cups:0, redeemed:0};
+  const totalCupsAfter = prev.cups + cupsInOrder;
+  loyalty[phone] = {cups: totalCupsAfter, redeemed: prev.redeemed + (preview.rewardAvailable?1:0)};
+  dbSet("loyalty", loyalty);
+}
 function recalcOrder(){
   const drinks = dbGet("drinks", DEFAULT_DRINKS);
-  let drinkTotal=0;
-  drinks.forEach(d=>{ drinkTotal += (orderQty[d.id]||0)*d.price; });
+  let drinkTotal=0, cupsInOrder=0;
+  drinks.forEach(d=>{ drinkTotal += (orderQty[d.id]||0)*d.price; cupsInOrder += (orderQty[d.id]||0); });
   const zones = dbGet("zones", DEFAULT_ZONES);
   let deliveryFee = 0;
   if(deliveryMode==="rider" && selectedZone!==null && zones[selectedZone]) deliveryFee = zones[selectedZone].fee;
+  const phone = (document.getElementById("orderPhone")||{}).value?.trim() || "";
+  const referral = (document.getElementById("orderReferral")||{}).value?.trim() || "";
+  const preview = previewDiscounts(phone, referral, cupsInOrder);
+  const discount = Math.min(preview.discount, drinkTotal);
   document.getElementById("sumDrinks").textContent = kes(drinkTotal);
   document.getElementById("sumDelivery").textContent = kes(deliveryFee);
-  document.getElementById("sumTotal").textContent = kes(drinkTotal+deliveryFee);
+  document.getElementById("sumTotal").textContent = kes(Math.max(0,drinkTotal-discount)+deliveryFee);
+  const discRow = document.getElementById("sumDiscountRow");
+  if(discount>0){ discRow.style.display="flex"; document.getElementById("sumDiscount").textContent = "-"+kes(discount); }
+  else { discRow.style.display="none"; }
+  const loyaltyNote = document.getElementById("loyaltyNote");
+  if(preview.progressNote){ loyaltyNote.style.display="block"; loyaltyNote.textContent = preview.progressNote; }
+  else { loyaltyNote.style.display="none"; }
 }
 function submitCustomZone(){
   const name = document.getElementById("customZoneName").value.trim();
@@ -526,6 +790,7 @@ function submitCustomZone(){
   alert("Sent! We'll confirm a delivery fee for "+name+" on WhatsApp.");
 }
 function placeOrder(){
+  if(blockIfLocked()) return;
   const drinks = dbGet("drinks", DEFAULT_DRINKS);
   const items = drinks.filter(d=>orderQty[d.id]>0).map(d=>`${orderQty[d.id]}x ${d.name}`);
   if(items.length===0){ alert("Add at least one drink."); return; }
@@ -536,16 +801,23 @@ function placeOrder(){
   const zone = deliveryMode==="rider" && selectedZone!==null ? zones[selectedZone] : null;
   const deliveryFee = zone ? zone.fee : 0;
   const drinkTotal = drinks.reduce((s,d)=>s+(orderQty[d.id]||0)*d.price,0);
-  const total = drinkTotal+deliveryFee;
+  const cupsInOrder = drinks.reduce((s,d)=>s+(orderQty[d.id]||0),0);
+  const referral = document.getElementById("orderReferral").value.trim();
+  const preview = previewDiscounts(phone, referral, cupsInOrder);
+  const discount = Math.min(preview.discount, drinkTotal);
+  const total = Math.max(0,drinkTotal-discount)+deliveryFee;
+  commitDiscounts(phone, referral, cupsInOrder, preview);
   const order = {id:uid(), type:"single", name, phone, items, zone: zone?zone.name:(deliveryMode==="own"?"Own transport":"Not set"),
-    deliveryFee, total, status:"new", placedOn:new Date().toISOString()};
+    deliveryFee, discount, total, status:"new", placedOn:new Date().toISOString()};
   const orders = dbGet("orders", []); orders.push(order); dbSet("orders", orders);
-  const msg = `TASTE ME order\nName: ${name}\nPhone: ${phone}\nItems: ${items.join(", ")}\nDelivery: ${order.zone} (${kes(deliveryFee)})\nTotal: ${kes(total)}\n\nM-Pesa to ${OWNER_PHONE_DISPLAY} on confirmation.`;
+  const discLine = discount>0 ? `\n${preview.notes.join(", ")}` : "";
+  const msg = `${BRAND.name} order\nName: ${name}\nPhone: ${phone}\nItems: ${items.join(", ")}\nDelivery: ${order.zone} (${kes(deliveryFee)})${discLine}\nTotal: ${kes(total)}\n\nM-Pesa to ${OWNER_PHONE_DISPLAY} on confirmation.`;
   window.open(waLink(OWNER_WHATSAPP, msg), "_blank");
-  orderQty={}; renderDrinkList(); recalcOrder();
+  orderQty={}; document.getElementById("orderReferral").value=""; renderDrinkList(); recalcOrder();
 }
 
 function emailOrder(){
+  if(blockIfLocked()) return;
   const drinks = dbGet("drinks", DEFAULT_DRINKS);
   const items = drinks.filter(d=>orderQty[d.id]>0).map(d=>`${orderQty[d.id]}x ${d.name}`);
   if(items.length===0){ alert("Add at least one drink."); return; }
@@ -556,15 +828,21 @@ function emailOrder(){
   const zone = deliveryMode==="rider" && selectedZone!==null ? zones[selectedZone] : null;
   const deliveryFee = zone ? zone.fee : 0;
   const drinkTotal = drinks.reduce((s,d)=>s+(orderQty[d.id]||0)*d.price,0);
-  const total = drinkTotal+deliveryFee;
+  const cupsInOrder = drinks.reduce((s,d)=>s+(orderQty[d.id]||0),0);
+  const referral = document.getElementById("orderReferral").value.trim();
+  const preview = previewDiscounts(phone, referral, cupsInOrder);
+  const discount = Math.min(preview.discount, drinkTotal);
+  const total = Math.max(0,drinkTotal-discount)+deliveryFee;
+  commitDiscounts(phone, referral, cupsInOrder, preview);
   const zoneName = zone?zone.name:(deliveryMode==="own"?"Own transport":"Not set");
   const order = {id:uid(), type:"single", name, phone, items, zone: zoneName,
-    deliveryFee, total, status:"new", placedOn:new Date().toISOString()};
+    deliveryFee, discount, total, status:"new", placedOn:new Date().toISOString()};
   const orders = dbGet("orders", []); orders.push(order); dbSet("orders", orders);
-  const subject = `TASTE ME order — ${name}`;
-  const body = `Name: ${name}\nPhone: ${phone}\nItems: ${items.join(", ")}\nDelivery: ${zoneName} (${kes(deliveryFee)})\nTotal: ${kes(total)}\n\nM-Pesa to ${OWNER_PHONE_DISPLAY} on confirmation.`;
+  const discLine = discount>0 ? `\n${preview.notes.join(", ")}` : "";
+  const subject = `${BRAND.name} order — ${name}`;
+  const body = `Name: ${name}\nPhone: ${phone}\nItems: ${items.join(", ")}\nDelivery: ${zoneName} (${kes(deliveryFee)})${discLine}\nTotal: ${kes(total)}\n\nM-Pesa to ${OWNER_PHONE_DISPLAY} on confirmation.`;
   window.location.href = `mailto:${OWNER_EMAIL_CONTACT}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-  orderQty={}; renderDrinkList(); recalcOrder();
+  orderQty={}; document.getElementById("orderReferral").value=""; renderDrinkList(); recalcOrder();
 }
 let groupZoneIdx = null;
 let groupPeople = [];
@@ -573,7 +851,7 @@ function renderGroupZonePicker(){
   document.getElementById("groupZonePicker").innerHTML = zones.map((z,i)=>{
     const groupFee = z.fee+GROUP_FEE_ADDON;
     return `<div class="zone-item ${groupZoneIdx===i?'selected':''}" onclick="pickGroupZone(${i})">
-      <span class="zn">${z.name}</span><span class="zf">${kes(z.fee)} + ${kes(GROUP_FEE_ADDON)} = ${kes(groupFee)}</span></div>`;
+      <span class="zn">${z.name}</span><span class="zf">${kes(groupFee)}</span></div>`;
   }).join("");
 }
 function pickGroupZone(i){ groupZoneIdx=i; renderGroupZonePicker(); recalcGroup(); }
@@ -621,6 +899,7 @@ function recalcGroup(){
   document.getElementById("gSumTotal").textContent = kes(drinkTotal+groupFee);
 }
 function placeGroupOrder(){
+  if(blockIfLocked()) return;
   if(groupZoneIdx===null){ alert("Pick a delivery zone for the group."); return; }
   if(groupPeople.length===0){ alert("Add at least one person to the group."); return; }
   const drinks = dbGet("drinks", DEFAULT_DRINKS);
@@ -642,12 +921,13 @@ function placeGroupOrder(){
     people:groupPeople.map((p,idx)=>({name:p.name||"Person "+(idx+1), qty:p.qty})),
     deliveryFee:groupFee, total, status:"new", placedOn:new Date().toISOString()};
   const orders = dbGet("orders", []); orders.push(order); dbSet("orders", orders);
-  const msg = `TASTE ME group order\nContact: ${contactName} (${contactPhone})\nZone: ${zone.name}\n\n${lines.join("\n")}\n\nGroup delivery: ${kes(zone.fee)} + ${kes(GROUP_FEE_ADDON)} = ${kes(groupFee)}\nTotal: ${kes(total)}`;
+  const msg = `${BRAND.name} group order\nContact: ${contactName} (${contactPhone})\nZone: ${zone.name}\n\n${lines.join("\n")}\n\nGroup delivery: ${kes(groupFee)}\nTotal: ${kes(total)}`;
   window.open(waLink(OWNER_WHATSAPP, msg), "_blank");
   groupPeople=[]; groupZoneIdx=null; renderGroupPeople(); renderGroupZonePicker(); recalcGroup();
 }
 
 function emailGroupOrder(){
+  if(blockIfLocked()) return;
   if(groupZoneIdx===null){ alert("Pick a delivery zone for the group."); return; }
   if(groupPeople.length===0){ alert("Add at least one person to the group."); return; }
   const drinks = dbGet("drinks", DEFAULT_DRINKS);
@@ -669,10 +949,107 @@ function emailGroupOrder(){
     people:groupPeople.map((p,idx)=>({name:p.name||"Person "+(idx+1), qty:p.qty})),
     deliveryFee:groupFee, total, status:"new", placedOn:new Date().toISOString()};
   const orders = dbGet("orders", []); orders.push(order); dbSet("orders", orders);
-  const subject = `TASTE ME group order — ${contactName}`;
-  const body = `Contact: ${contactName} (${contactPhone})\nZone: ${zone.name}\n\n${lines.join("\n")}\n\nGroup delivery: ${kes(zone.fee)} + ${kes(GROUP_FEE_ADDON)} = ${kes(groupFee)}\nTotal: ${kes(total)}`;
+  const subject = `${BRAND.name} group order — ${contactName}`;
+  const body = `Contact: ${contactName} (${contactPhone})\nZone: ${zone.name}\n\n${lines.join("\n")}\n\nGroup delivery: ${kes(groupFee)}\nTotal: ${kes(total)}`;
   window.location.href = `mailto:${OWNER_EMAIL_CONTACT}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   groupPeople=[]; groupZoneIdx=null; renderGroupPeople(); renderGroupZonePicker(); recalcGroup();
+}
+
+/* =========================================================================
+   SUBSCRIPTIONS (weekly / monthly drink plans)
+========================================================================= */
+let selectedPlan = "weekly";
+function subPlanById(id){ return SUB_PLANS.find(p=>p.id===id) || SUB_PLANS[0]; }
+function renderSubscriptions(){
+  const plansWrap = document.getElementById("subPlans");
+  if(!plansWrap) return;
+  plansWrap.innerHTML = SUB_PLANS.map(p=>{
+    const normal = p.cups * BRAND.unitPrice;
+    const save = normal - p.price;
+    return `<button type="button" class="plan-tile ${selectedPlan===p.id?'selected':''}" onclick="pickPlan('${p.id}')">
+      <span class="pl-name">${p.name}</span>
+      <span class="pl-price">${kes(p.price)}</span>
+      <span class="pl-detail">${p.detail}</span>
+      ${save>0 ? `<span class="pl-save">Save ${kes(save)}</span>` : ""}
+    </button>`;
+  }).join("");
+
+  // rebuild selects but keep what the customer already chose
+  const flavSel = document.getElementById("subFlavour");
+  const zoneSel = document.getElementById("subZone");
+  const prevFlav = flavSel.value, prevZone = zoneSel.value;
+  const drinks = dbGet("drinks", DEFAULT_DRINKS);
+  flavSel.innerHTML = `<option value="Mix it up">Mix it up — a different flavour each day</option>` +
+    drinks.map(d=>`<option value="${d.name}">${d.name}</option>`).join("");
+  const zones = dbGet("zones", DEFAULT_ZONES);
+  zoneSel.innerHTML = `<option value="own">I'll arrange my own transport</option>` +
+    zones.map((z,i)=>`<option value="${i}">${z.name} (${kes(z.fee)} per delivery${subDropsFor(z.name)?` · ${subDropsFor(z.name)} drops a week`:""})</option>`).join("");
+  if(prevFlav && [...flavSel.options].some(o=>o.value===prevFlav)) flavSel.value = prevFlav;
+  if(prevZone && [...zoneSel.options].some(o=>o.value===prevZone)) zoneSel.value = prevZone;
+
+  document.getElementById("subMpesa").textContent = OWNER_PHONE_DISPLAY;
+  recalcSub();
+}
+function pickPlan(id){ selectedPlan = id; renderSubscriptions(); }
+function subDeliveryFee(){
+  const v = document.getElementById("subZone").value;
+  if(v==="own") return 0;
+  const zones = dbGet("zones", DEFAULT_ZONES);
+  return zones[Number(v)] ? zones[Number(v)].fee : 0;
+}
+function subDropsFor(zoneName){ return SUB_DROPS_PER_WEEK[String(zoneName||"").trim().toLowerCase()] || 0; }
+function subZoneObj(){
+  const v = document.getElementById("subZone").value;
+  if(v==="own") return null;
+  return dbGet("zones", DEFAULT_ZONES)[Number(v)] || null;
+}
+function subDropsTotal(plan, perWeek){ return Math.ceil(plan.days/7*perWeek); }
+function recalcSub(){
+  const plan = subPlanById(selectedPlan);
+  const zone = subZoneObj();
+  const perWeek = zone ? subDropsFor(zone.name) : 0;
+  const note = document.getElementById("subDropNote"), row = document.getElementById("subDropsRow");
+  if(perWeek){
+    const drops = subDropsTotal(plan, perWeek);
+    note.style.display = "block";
+    note.textContent = `${zone.name} gets ${perWeek} drops a week (for example Mon, Wed, Fri). Your cups are split across those drops, and we'll agree the days with you on WhatsApp.`;
+    row.style.display = "flex";
+    document.getElementById("subDropsLabel").textContent = `Delivery for this plan (${drops} drops)`;
+    document.getElementById("subDropsTotal").textContent = kes(zone.fee*drops);
+  } else { note.style.display = "none"; row.style.display = "none"; }
+  document.getElementById("subPlanLabel").textContent = plan.name + " (" + plan.cups + " " + BRAND.unitLabel + "s)";
+  document.getElementById("subPlanPrice").textContent = kes(plan.price);
+  document.getElementById("subDelivery").textContent = kes(subDeliveryFee());
+  document.getElementById("subTotal").textContent = kes(plan.price);
+}
+function placeSubscription(channel){
+  if(blockIfLocked()) return;
+  const plan = subPlanById(selectedPlan);
+  const name = document.getElementById("subName").value.trim();
+  const phone = document.getElementById("subPhone").value.trim();
+  if(!name || !phone){ alert("Please add your name and phone number."); return; }
+  const flavour = document.getElementById("subFlavour").value;
+  const zoneVal = document.getElementById("subZone").value;
+  const zones = dbGet("zones", DEFAULT_ZONES);
+  const zone = zoneVal==="own" ? null : zones[Number(zoneVal)];
+  const zoneName = zone ? zone.name : "Own transport";
+  const deliveryFee = zone ? zone.fee : 0;
+  const perWeek = zone ? subDropsFor(zone.name) : 0;
+  const totalDrops = perWeek ? subDropsTotal(plan, perWeek) : 0;
+  const dropText = perWeek ? `${perWeek} drops a week` : "";
+  const itemLine = `${plan.name} — ${plan.cups} ${BRAND.unitLabel}s (${flavour})${dropText?`, ${dropText}`:""}`;
+  const order = {id:uid(), type:"subscription", plan:plan.id, name, phone, items:[itemLine], zone:zoneName,
+    deliveryFee, dropsPerWeek:perWeek, totalDrops, discount:0, total:plan.price, status:"new", placedOn:new Date().toISOString()};
+  const orders = dbGet("orders", []); orders.push(order); dbSet("orders", orders);
+  const msg = `${BRAND.name} subscription\nName: ${name}\nPhone: ${phone}\nPlan: ${plan.name} (${plan.detail})\nFlavour: ${flavour}\nDelivery: ${zoneName}${zone?` (${kes(deliveryFee)} per delivery)`:""}${perWeek?`\nSchedule: ${perWeek} drops a week (${totalDrops} drops, ${kes(deliveryFee*totalDrops)} delivery in total)`:""}\nPlan price: ${kes(plan.price)}\n\nM-Pesa to ${OWNER_PHONE_DISPLAY} on confirmation.`;
+  if(channel==="email"){
+    const subject = `${BRAND.name} subscription — ${name}`;
+    window.location.href = `mailto:${OWNER_EMAIL_CONTACT}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(msg)}`;
+  } else {
+    window.open(waLink(OWNER_WHATSAPP, msg), "_blank");
+  }
+  document.getElementById("subName").value = ""; document.getElementById("subPhone").value = "";
+  alert("Subscription request sent! We'll confirm on WhatsApp.");
 }
 
 /* =========================================================================
@@ -686,7 +1063,7 @@ function trackOrder(){
   if(mine.length===0){ wrap.innerHTML = '<p class="note">No orders found for that number yet.</p>'; return; }
   wrap.innerHTML = mine.map(o=>`<div class="card">
     <div><span class="badge ${o.status==='delivered'?'':(o.status==='dispatched'?'warn':'off')}">${o.status}</span></div>
-    <p style="margin-top:8px;">${o.type==="group"?"Group order":"Order"} · ${o.zone||"—"} · ${kes(o.total)}<br>
+    <p style="margin-top:8px;">${o.type==="group"?"Group order":(o.type==="subscription"?"Subscription":"Order")} · ${o.zone||"—"} · ${kes(o.total)}<br>
     Placed ${new Date(o.placedOn).toLocaleString()}</p>
   </div>`).join("");
 }
@@ -730,6 +1107,67 @@ function copyShareLink(){
 }
 
 /* =========================================================================
+   ADS — customer-facing list + request form
+   (Payment amounts, durations and approval all stay in the Owner tab —
+   customers here only ever see business name, tagline, category and a
+   contact button.)
+========================================================================= */
+function toWaPhone(phone){
+  let p = (phone||"").replace(/\D/g,"");
+  if(p.startsWith("0")) p = "254"+p.slice(1);
+  else if(p.startsWith("7")||p.startsWith("1")) p = "254"+p;
+  return p;
+}
+function mediaStrip(media, sizeClass){
+  if(!media || !media.length) return "";
+  return `<div style="display:flex;gap:6px;overflow-x:auto;margin:8px 0;">${media.map(m=>
+    m.type==="video"
+      ? `<video src="${m.url}" controls style="${sizeClass};border-radius:10px;object-fit:cover;flex:0 0 auto;"></video>`
+      : `<img src="${m.url}" style="${sizeClass};border-radius:10px;object-fit:cover;flex:0 0 auto;">`
+  ).join("")}</div>`;
+}
+function filesToMedia(fileList){
+  const files = Array.from(fileList||[]);
+  return Promise.all(files.map(file=> new Promise((resolve,reject)=>{
+    const reader = new FileReader();
+    reader.onload = ()=> resolve({type: file.type.startsWith("video") ? "video" : "image", url: reader.result});
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  })));
+}
+async function renderAdsList(){
+  const ads = dbGet("ads", []).filter(a=>a.status==="active" && a.expiresOn>=todayISO());
+  const wrap = document.getElementById("adsList");
+  if(!wrap) return;
+  wrap.innerHTML = ads.length ? ads.map(a=>`
+    <div class="service-card">
+      <div class="service-icon">📣</div>
+      <div style="flex:1 1 auto;">
+        <h4>${a.business}</h4>
+        <p>${a.tagline||""}${a.category?` · ${a.category}`:""}</p>
+        ${mediaStrip(a.media, "width:120px;height:90px")}
+        <button class="btn small ghost" onclick="window.open('${waLink([toWaPhone(a.phone)], 'Hi, I saw your ad on the '+BRAND.name+' app!')}','_blank')">Contact ${a.business}</button>
+      </div>
+    </div>`).join("") : "<p>No ads running right now.</p>";
+}
+async function requestAd(){
+  const business = document.getElementById("adReqBusiness").value.trim();
+  const tagline = document.getElementById("adReqTagline").value.trim();
+  const phone = document.getElementById("adReqPhone").value.trim();
+  if(!business || !phone){ alert("Add your business name and phone number."); return; }
+  const btn = document.getElementById("adReqBtn");
+  btn.disabled = true; btn.textContent = "Sending...";
+  const media = await filesToMedia(document.getElementById("adReqMedia").files);
+  const ads = dbGet("ads", []);
+  ads.push({id:uid(), business, tagline, phone, category:"", price:0, months:0, startOn:"", expiresOn:"", status:"requested", media, requestedOn:new Date().toISOString()});
+  dbSet("ads", ads);
+  window.open(waLink(OWNER_WHATSAPP, `Ad request\nBusiness: ${business}\nOffer: ${tagline}\nContact: ${phone}`), "_blank");
+  document.getElementById("adReqBusiness").value=""; document.getElementById("adReqTagline").value=""; document.getElementById("adReqPhone").value=""; document.getElementById("adReqMedia").value="";
+  btn.disabled = false; btn.textContent = "Send request";
+  alert("Sent! We'll confirm pricing with you on WhatsApp.");
+}
+
+/* =========================================================================
    SDS — SURPRISE PARADISE
 ========================================================================= */
 let sdsPhone = "";
@@ -769,7 +1207,7 @@ function requestSdsActivation(){
   const requests = dbGet("sdsRequests", []);
   requests.push({id:uid(), type:"subscription", phone:sdsPhone, status:"pending", requestedOn:todayISO()});
   dbSet("sdsRequests", requests);
-  const msg = `SDS activation request\nPhone: ${sdsPhone}\nAmount: KES 50 (${SDS_MONTHS} months)\nPlease confirm once received.`;
+  const msg = `${BRAND.sdsBadge} activation request\nPhone: ${sdsPhone}\nAmount: KES 50 (${SDS_MONTHS} months)\nPlease confirm once received.`;
   window.open(waLink(OWNER_WHATSAPP, msg), "_blank");
   checkSdsAccess();
 }
@@ -788,7 +1226,7 @@ function renderSdsServices(area, unlocked){
     <div class="service-card">
       <div class="service-icon">👕</div>
       <div>
-        <h4>Chané Corner — Taste Me merch</h4>
+        <h4 id="merchHeading">Chané Corner — merch</h4>
         <p>Branded T-shirts, shirts, caps, panties, boxers, trousers, shorts, sleepwear, cups, bottles, plates & tote bags.</p>
         ${unlocked ? `<button class="btn small ghost" onclick="showMerchStore()">Browse merch</button>` : `<span class="badge off">Unlock to browse</span>`}
         <div id="merchStoreArea"></div>
@@ -830,7 +1268,7 @@ function showMerchStore(){
   if(products.length===0){ area.innerHTML = '<p class="note">No items posted yet — check back soon.</p>'; return; }
   area.innerHTML = `<div class="product-grid" style="margin-top:8px;">${products.map(p=>`
     <div class="product-card">
-      <div class="pimg">👕</div>
+      <div class="pimg">${p.image?`<img src="${p.image}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;" onerror="this.parentElement.textContent='👕'">`:"👕"}</div>
       <div class="pname">${p.name}</div>
       <div style="font-size:11px;color:var(--ink-soft);">${p.category}</div>
       <div class="pprice">${kes(p.price)}</div>
@@ -896,7 +1334,7 @@ function ownerLogin(){
   ownerSession = match.name;
   renderOwnerGate();
 }
-const ownerSubTabs = ["dashboard","zones","access","products","sds","update"];
+const ownerSubTabs = ["dashboard","lock","growth","zones","access","products","ads","sds","update"];
 let ownerActiveSub = "dashboard";
 function renderOwnerDashboard(wrap){
   wrap.innerHTML = `
@@ -907,10 +1345,13 @@ function renderOwnerDashboard(wrap){
       </div>
       <div class="sub-tabs">
         <button class="sub-tab active" data-s="dashboard">Orders</button>
+        <button class="sub-tab" data-s="lock">🔒 Lock orders</button>
+        <button class="sub-tab" data-s="growth">Growth</button>
         <button class="sub-tab" data-s="zones">Zones & fees</button>
         <button class="sub-tab" data-s="access">Access</button>
         <button class="sub-tab" data-s="products">Merch</button>
-        <button class="sub-tab" data-s="sds">SDS requests</button>
+        <button class="sub-tab" data-s="ads">Ads</button>
+        <button class="sub-tab" data-s="sds" id="ownerSdsSubTab">SDS requests</button>
         <button class="sub-tab" data-s="update">Update & setup</button>
       </div>
       <div id="ownerPanels"></div>
@@ -942,6 +1383,36 @@ function renderOwnerPanels(){
         <input type="number" placeholder="fee" style="width:90px;display:inline-block;margin:0 6px;" id="feefor-${z.id}">
         <button class="btn small gold" onclick="approveZone('${z.id}')">Add as zone</button></div>`).join("");
     }
+  } else if(ownerActiveSub==="growth"){
+    const orders = dbGet("orders", []);
+    const zoneStats = {};
+    orders.forEach(o=>{
+      const z = o.zone || "Unknown";
+      if(!zoneStats[z]) zoneStats[z] = {count:0, revenue:0};
+      zoneStats[z].count++; zoneStats[z].revenue += (o.total||0);
+    });
+    const zoneRows = Object.entries(zoneStats).sort((a,b)=>b[1].revenue-a[1].revenue);
+    const loyalty = dbGet("loyalty", {});
+    const loyaltyRows = Object.entries(loyalty).sort((a,b)=>b[1].cups-a[1].cups).slice(0,8);
+    const referrals = dbGet("referrals", []);
+    const referralCounts = {};
+    referrals.forEach(r=>{ referralCounts[r.referrer]=(referralCounts[r.referrer]||0)+1; });
+    const referralRows = Object.entries(referralCounts).sort((a,b)=>b[1]-a[1]);
+    const credits = dbGet("credits", {});
+    panels.innerHTML = `
+      <h4>Zone performance</h4>
+      ${zoneRows.length? `<table class="admin-table"><tr><th>Zone</th><th>Orders</th><th>Revenue</th></tr>
+        ${zoneRows.map(([name,s])=>`<tr><td>${name}</td><td>${s.count}</td><td>${kes(s.revenue)}</td></tr>`).join("")}
+      </table>` : "<p>No orders yet.</p>"}
+      <h4 style="margin-top:16px;">Loyalty — top customers</h4>
+      ${loyaltyRows.length? `<table class="admin-table"><tr><th>Phone</th><th>Cups bought</th><th>Free cups redeemed</th></tr>
+        ${loyaltyRows.map(([phone,l])=>`<tr><td>${phone}</td><td>${l.cups}</td><td>${l.redeemed}</td></tr>`).join("")}
+      </table>` : "<p>No loyalty activity yet.</p>"}
+      <h4 style="margin-top:16px;">Referrals</h4>
+      ${referralRows.length? `<table class="admin-table"><tr><th>Referrer phone</th><th>Friends referred</th><th>Credit balance</th></tr>
+        ${referralRows.map(([phone,n])=>`<tr><td>${phone}</td><td>${n}</td><td>${kes(credits[phone]||0)}</td></tr>`).join("")}
+      </table>` : "<p>No referrals yet.</p>"}
+      <div class="note">Every ${LOYALTY_CUPS_NEEDED} cups a customer buys earns them one free cup, applied automatically at checkout. A referral code (a friend's phone number) gives the new customer ${kes(REFERRAL_DISCOUNT)} off, and credits the referrer ${kes(REFERRAL_CREDIT)} toward their next order. Both apply on single orders only, not group orders.</div>`;
   } else if(ownerActiveSub==="zones"){
     const zones = dbGet("zones", DEFAULT_ZONES);
     panels.innerHTML = `<table class="admin-table"><tr><th>Zone</th><th>Fee</th><th></th></tr>
@@ -967,14 +1438,58 @@ function renderOwnerPanels(){
       <button class="btn small secondary" style="width:100%;" onclick="addRider()">Add rider</button>`;
   } else if(ownerActiveSub==="products"){
     const products = dbGet("products", []);
-    panels.innerHTML = `<table class="admin-table"><tr><th>Item</th><th>Category</th><th>Price</th><th></th></tr>
-      ${products.map((p,i)=>`<tr><td>${p.name}</td><td>${p.category}</td><td>${kes(p.price)}</td><td><button class="linkbtn" onclick="removeProduct(${i})">Remove</button></td></tr>`).join("")}
+    panels.innerHTML = `<table class="admin-table"><tr><th>Photo</th><th>Item</th><th>Category</th><th>Price</th><th></th></tr>
+      ${products.map((p,i)=>`<tr><td>${p.image?`<img src="${p.image}" style="width:34px;height:34px;object-fit:cover;border-radius:6px;" onerror="this.style.display='none'">`:"—"}</td><td>${p.name}</td><td>${p.category}</td><td>${kes(p.price)}</td><td><button class="linkbtn" onclick="removeProduct(${i})">Remove</button></td></tr>`).join("")}
       </table>
       <label>Item name</label><input type="text" id="newProdName">
       <label>Category</label>
       <select id="newProdCat">${["T-shirts","Shirts","Caps","Panties","Boxers","Trousers","Shorts","Sleepwear","Cups","Bottles","Plates","Tote bags"].map(c=>`<option>${c}</option>`).join("")}</select>
       <label>Price (KES)</label><input type="number" id="newProdPrice">
+      <label>Photo link (optional)</label><input type="text" id="newProdImage" placeholder="Paste a photo URL, e.g. from Google Drive or Facebook">
+      <p style="font-size:12px;">Tip: upload the photo somewhere it gets a public link (Google Drive "Anyone with the link can view," Facebook photo, Imgur, etc.), then paste that link here.</p>
       <button class="btn small secondary" style="width:100%;" onclick="addProduct()">Post item</button>`;
+  } else if(ownerActiveSub==="ads"){
+    const ads = dbGet("ads", []).slice().reverse();
+    panels.innerHTML = (ads.length ? ads.map(a=>{
+      const thumbs = a.media && a.media.length ? `<div style="display:flex;gap:6px;overflow-x:auto;margin:6px 0;">${a.media.map((m,idx)=>`
+        <div style="position:relative;flex:0 0 auto;">
+          ${m.type==="video" ? `<video src="${m.url}" style="width:60px;height:60px;object-fit:cover;border-radius:8px;" muted></video>` : `<img src="${m.url}" style="width:60px;height:60px;object-fit:cover;border-radius:8px;">`}
+          <button class="linkbtn" style="position:absolute;top:-6px;right:-6px;background:#fff;border-radius:50%;width:18px;height:18px;line-height:18px;padding:0;font-size:12px;" onclick="removeAdMediaItem('${a.id}',${idx})">×</button>
+        </div>`).join("")}</div>` : "";
+      if(a.status==="requested"){
+        return `<div class="person-block">
+          <span class="badge warn">requested</span>
+          <strong>${a.business}</strong> — ${a.tagline||""}<br>Contact: ${a.phone}
+          ${thumbs}
+          <label>Add more photos/video (optional)</label><input type="file" id="admedia-${a.id}" accept="image/*,video/*" multiple>
+          <label>Amount paid (KES)</label><input type="number" id="adprice-${a.id}">
+          <label>Duration (months)</label><input type="number" id="admonths-${a.id}" value="1">
+          <label>Category</label>
+          <select id="adcat-${a.id}"><option>Food & drink</option><option>Fashion</option><option>Services</option><option>Retail</option><option>Other</option></select>
+          <button class="btn small gold" style="margin-top:8px;" id="adactivatebtn-${a.id}" onclick="activateAd('${a.id}')">Confirm payment & activate</button>
+        </div>`;
+      }
+      return `<div class="person-block">
+        <span class="badge ${a.status==="active"?"":"off"}">${a.status}</span>
+        <strong>${a.business}</strong> (${a.category||"—"}) — ${kes(a.price||0)} · until ${a.expiresOn||"—"}<br>Contact: ${a.phone}
+        ${thumbs}
+        <label>Add more photos/video (optional)</label><input type="file" id="admedia-${a.id}" accept="image/*,video/*" multiple>
+        <button class="btn small ghost" style="margin-top:6px;" onclick="addAdMedia('${a.id}')">Add media</button>
+        ${a.status==="active"?`<button class="linkbtn" onclick="pauseAd('${a.id}')">Pause</button>`:`<button class="linkbtn" onclick="resumeAd('${a.id}')">Resume</button>`}
+        <button class="linkbtn" onclick="removeAd('${a.id}')">Remove</button>
+      </div>`;
+    }).join("") : "<p>No ads yet.</p>") + `
+      <h4 style="margin-top:16px;">Post a new ad (your own businesses or a paying client)</h4>
+      <label>Business name</label><input type="text" id="newAdBusiness">
+      <label>Tagline / what they offer</label><input type="text" id="newAdTagline">
+      <label>Contact phone</label><input type="tel" id="newAdPhone">
+      <label>Category</label>
+      <select id="newAdCategory"><option>Food & drink</option><option>Fashion</option><option>Services</option><option>Retail</option><option>Other</option></select>
+      <label>Amount paid (KES)</label><input type="number" id="newAdPrice">
+      <label>Duration (months)</label><input type="number" id="newAdMonths" value="1">
+      <label>Photos / a short video (optional)</label><input type="file" id="newAdMedia" accept="image/*,video/*" multiple>
+      <button class="btn small secondary" style="width:100%;" id="addAdBtn" onclick="addAd()">Post ad (goes live now)</button>
+      <div class="note">Customers on the Ads tab only ever see the business name, tagline, category, photos/video and a contact button. What was paid, for how long, and who's pending all stay here — customers never see this screen. Keep videos short and photos modest in size so everything saves smoothly.</div>`;
   } else if(ownerActiveSub==="sds"){
     const reqs = dbGet("sdsRequests", []).slice().reverse();
     panels.innerHTML = reqs.length ? reqs.map(r=>{
@@ -985,7 +1500,45 @@ function renderOwnerPanels(){
         </div>`;
       }
       return `<div class="person-block"><span class="badge off">${r.type}</span> ${r.phone} — ${r.item||r.product||r.dish||""}</div>`;
-    }).join("") : "<p>No SDS requests yet.</p>";
+    }).join("") : `<p>No ${BRAND.sdsBadge} requests yet.</p>`;
+  } else if(ownerActiveSub==="lock"){
+    const L = getOrderLock(), st = orderLockStatus(), nowMs = Date.now();
+    const srcLabel = {manual:"a manual lock", window:"a scheduled lock", hours:"your daily opening hours"}[st.source] || "";
+    const wins = L.windows.slice().sort((a,b)=>new Date(a.from)-new Date(b.from));
+    const winsHtml = wins.length ? wins.map(w=>{
+      const s0 = new Date(w.from).getTime(), e0 = new Date(w.to).getTime();
+      const state = nowMs>=e0 ? "ended" : (nowMs>=s0 ? "active now" : "upcoming");
+      return `<div class="person-block"><span class="badge ${state==="active now"?"warn":(state==="ended"?"off":"")}">${state}</span> ${fmtWhen(s0)} → ${fmtWhen(e0)}${w.msg?`<br><em>${escHtml(w.msg)}</em>`:""}<br><button class="linkbtn" onclick="removeLockWindow('${w.id}')">Remove</button></div>`;
+    }).join("") : '<p style="font-size:12.5px;">No scheduled locks yet.</p>';
+    panels.innerHTML = `
+      <div class="note" style="border-left:4px solid ${st.locked?"var(--tongue)":"var(--leaf)"};">
+        <strong>${st.locked?"🔴 Ordering is LOCKED":"🟢 Ordering is OPEN"}</strong><br>
+        ${st.locked ? `Locked by ${srcLabel}${st.until?` · reopens ${st.until}`:""}.` : "Customers can place orders right now."}
+      </div>
+      ${FIREBASE_CONFIG ? "" : `<div class="note">⚠️ Sync isn't set up, so a manual or scheduled lock only affects <strong>this phone</strong>. Daily opening hours placed in <code>BRAND.orderHours</code> in the file work on every customer's phone. To make every lock reach every customer, add a Firebase config (see Update &amp; setup).</div>`}
+
+      <h4>Lock ordering now</h4>
+      ${(L.manual && st.source==="manual") ? `<button class="btn secondary" onclick="unlockNow()">🔓 Reopen ordering now</button>` : `
+        <label>Message customers see (optional)</label>
+        <input type="text" id="lockMsg" placeholder="e.g. Sold out for today — back tomorrow at 8am!">
+        <label>Reopen automatically at (optional)</label>
+        <input type="datetime-local" id="lockReopen">
+        <button class="btn" onclick="lockNow()">🔒 Lock ordering now</button>`}
+
+      <h4 style="margin-top:20px;">Schedule a lock</h4>
+      <p style="font-size:12.5px;">For lunch breaks, days off, or times you're out delivering.</p>
+      ${winsHtml}
+      <label>From</label><input type="datetime-local" id="winFrom">
+      <label>Until</label><input type="datetime-local" id="winTo">
+      <label>Message (optional)</label><input type="text" id="winMsg" placeholder="e.g. On a lunch break — back at 2pm">
+      <button class="btn small secondary" style="width:100%; margin-top:10px;" onclick="addLockWindow()">Add scheduled lock</button>
+
+      <h4 style="margin-top:20px;">Daily opening hours</h4>
+      <label style="display:flex; align-items:center; gap:8px;"><input type="checkbox" id="hoursOn" style="width:auto;" ${L.dailyOn?"checked":""}> Only take orders during these hours</label>
+      <label>Opens</label><input type="time" id="hoursOpen" value="${L.open}">
+      <label>Closes</label><input type="time" id="hoursClose" value="${L.close}">
+      <button class="btn small secondary" style="width:100%; margin-top:10px;" onclick="saveDailyHours()">Save hours</button>
+      <div class="note">The lock covers the Order, Group and Subscribe sections. Tracking, Reviews, Ads and the ${escHtml(BRAND.sdsBadge)} tab stay available.</div>`;
   } else if(ownerActiveSub==="update"){
     panels.innerHTML = `
       <span class="version-tag">Current version ${APP_VERSION}</span>
@@ -1023,10 +1576,54 @@ function addProduct(){
   const name=document.getElementById("newProdName").value.trim();
   const category=document.getElementById("newProdCat").value;
   const price=Number(document.getElementById("newProdPrice").value);
+  const image=document.getElementById("newProdImage").value.trim();
   if(!name||!price){ alert("Add item name and price."); return; }
-  const products=dbGet("products", []); products.push({id:uid(),name,category,price}); dbSet("products",products); renderOwnerPanels();
+  const products=dbGet("products", []); products.push({id:uid(),name,category,price,image}); dbSet("products",products); renderOwnerPanels();
 }
 function removeProduct(i){ const products=dbGet("products", []); products.splice(i,1); dbSet("products",products); renderOwnerPanels(); }
+async function activateAd(id){
+  const ads = dbGet("ads", []); const a = ads.find(a=>a.id===id); if(!a) return;
+  const price = Number(document.getElementById("adprice-"+id).value)||0;
+  const months = Number(document.getElementById("admonths-"+id).value)||1;
+  const category = document.getElementById("adcat-"+id).value;
+  const fileInput = document.getElementById("admedia-"+id);
+  const btn = document.getElementById("adactivatebtn-"+id);
+  if(btn){ btn.disabled=true; btn.textContent="Saving..."; }
+  const newMedia = fileInput ? await filesToMedia(fileInput.files) : [];
+  a.price=price; a.months=months; a.category=category; a.status="active"; a.startOn=todayISO(); a.expiresOn=addMonths(todayISO(), months);
+  a.media = (a.media||[]).concat(newMedia);
+  dbSet("ads", ads); renderOwnerPanels();
+}
+async function addAdMedia(id){
+  const ads = dbGet("ads", []); const a = ads.find(a=>a.id===id); if(!a) return;
+  const fileInput = document.getElementById("admedia-"+id);
+  const newMedia = await filesToMedia(fileInput.files);
+  if(!newMedia.length) return;
+  a.media = (a.media||[]).concat(newMedia);
+  dbSet("ads", ads); renderOwnerPanels();
+}
+function removeAdMediaItem(id, idx){
+  const ads = dbGet("ads", []); const a = ads.find(a=>a.id===id); if(!a || !a.media) return;
+  a.media.splice(idx,1); dbSet("ads", ads); renderOwnerPanels();
+}
+function pauseAd(id){ const ads=dbGet("ads",[]); const a=ads.find(a=>a.id===id); if(a){a.status="paused"; dbSet("ads",ads);} renderOwnerPanels(); }
+function resumeAd(id){ const ads=dbGet("ads",[]); const a=ads.find(a=>a.id===id); if(a){a.status="active"; a.expiresOn=addMonths(todayISO(), a.months||1); dbSet("ads",ads);} renderOwnerPanels(); }
+function removeAd(id){ const ads=dbGet("ads",[]).filter(a=>a.id!==id); dbSet("ads",ads); renderOwnerPanels(); }
+async function addAd(){
+  const business = document.getElementById("newAdBusiness").value.trim();
+  const tagline = document.getElementById("newAdTagline").value.trim();
+  const phone = document.getElementById("newAdPhone").value.trim();
+  const category = document.getElementById("newAdCategory").value;
+  const price = Number(document.getElementById("newAdPrice").value)||0;
+  const months = Number(document.getElementById("newAdMonths").value)||1;
+  if(!business || !phone){ alert("Add a business name and contact phone."); return; }
+  const btn = document.getElementById("addAdBtn");
+  btn.disabled = true; btn.textContent = "Saving...";
+  const media = await filesToMedia(document.getElementById("newAdMedia").files);
+  const ads = dbGet("ads", []);
+  ads.push({id:uid(), business, tagline, phone, category, price, months, startOn:todayISO(), expiresOn:addMonths(todayISO(), months), status:"active", media});
+  dbSet("ads", ads); renderOwnerPanels();
+}
 function approveSub(id){
   const reqs = dbGet("sdsRequests", []);
   const r = reqs.find(r=>r.id===id); if(!r) return;
@@ -1078,15 +1675,61 @@ function riderLogout(){ riderSession=null; renderRiderGate(); }
    INIT
 ========================================================================= */
 function renderAll(){
-  renderDrinkList(); renderZonePicker(); recalcOrder();
+  renderDrinkList(); renderZonePicker(); recalcOrder(); renderSubscriptions();
   renderGroupZonePicker(); renderGroupPeople(); recalcGroup();
-  renderReviews(); renderShare(); renderSdsGate();
-  renderOwnerGate(); renderRiderGate();
+  renderReviews(); renderShare(); renderSdsGate(); renderAdsList();
+  renderOwnerGate(); renderRiderGate(); applyOrderLock();
 }
+
+/* ---------------- apply BRAND config to page (white-label layer) --------------- */
+function applyBrand(){
+  document.title = BRAND.name + " — " + BRAND.tagline;
+  const setText = (id, text)=>{ const el=document.getElementById(id); if(el) el.textContent = text; };
+  setText("brandName", BRAND.name);
+  setText("brandTagline", BRAND.tagline);
+  setText("brandEmailLine", "✉️ " + BRAND.contactEmail);
+  setText("orderHeading", "Pick your " + BRAND.itemPlural);
+  setText("orderBlurb", `Flat ${BRAND.currency} ${BRAND.unitPrice} per ${BRAND.unitLabel}. Choose one delivery zone, or arrange your own transport.`);
+  setText("shareHeading", "Share " + BRAND.name);
+  setText("shareEmail", BRAND.contactEmail);
+  setText("adsIntro", "Businesses — including " + BRAND.name + "'s own other ventures — can advertise here for our customers to see.");
+  setText("merchHeading", "Chané Corner — " + BRAND.merchName);
+  setText("sdsBadgeTag", BRAND.sdsBadge);
+  setText("sdsNavLabel", BRAND.sdsBadge);
+  setText("ownerSdsSubTab", BRAND.sdsBadge + " requests");
+  { const el=document.getElementById("sdsHeading"); if(el) el.innerHTML = BRAND.sdsName + ` <span class="badge warn" id="sdsBadgeTag">${BRAND.sdsBadge}</span>`; }
+
+  // colors
+  document.documentElement.style.setProperty("--tongue", BRAND.primaryColor);
+  document.documentElement.style.setProperty("--tongue-dark", BRAND.primaryColorDark);
+
+  // logo swap
+  if(BRAND.logo && BRAND.logo.type === "emoji"){
+    const wrap = document.getElementById("logoWrap");
+    if(wrap) wrap.innerHTML = `<div style="font-size:52px; line-height:1; width:66px; text-align:center;">${BRAND.logo.value}</div>`;
+  }
+
+  { const sub=document.getElementById("subCard"); if(sub && BRAND.enableSubscriptions===false) sub.style.display="none"; }
+
+  // feature toggles — hide nav item + tab entirely when a vendor doesn't need it
+  const toggles = [["group", BRAND.enableGroupOrders], ["sds", BRAND.enableSds], ["ads", BRAND.enableAds]];
+  toggles.forEach(([tab, on])=>{
+    if(on) return;
+    const nav = document.querySelector(`.navitem[data-tab="${tab}"]`);
+    const sec = document.getElementById("tab-"+tab);
+    if(nav) nav.style.display = "none";
+    if(sec) sec.style.display = "none";
+  });
+}
+
 initFirebase();
 dbGet("zones", DEFAULT_ZONES); dbGet("drinks", DEFAULT_DRINKS); dbGet("ownerAccounts", DEFAULT_OWNER_ACCOUNTS);
 addGroupPerson();
+applyBrand();
 renderAll();
+// keep the lock accurate while the app sits open, and when the phone wakes up
+setInterval(applyOrderLock, 30000);
+document.addEventListener("visibilitychange", ()=>{ if(!document.hidden) applyOrderLock(); });
 </script>
 </body>
 </html>
